@@ -24,32 +24,4 @@ public class PetSpecie : BaseEntity<Guid>
 
         return new PetSpecie(name);
     }
-
-    public Result AddBreed(PetBreed breed)
-    {
-        if (breed == null)
-            return Result.Failure("Breed should not be null");
-
-        _breeds.Add(breed);
-
-        return Result.Success();
-    }
-    public Result RemoveBreed(PetBreed breed)
-    {
-        if (breed == null)
-            return Result.Failure("Breed should not be null");
-
-        _breeds.Remove(breed);
-
-        return Result.Success();
-    }
-    public Result UpdateName(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            return Result.Failure("Name should not be empty");
-
-        Name = name;
-
-        return Result.Success();
-    }
 }

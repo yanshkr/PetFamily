@@ -22,14 +22,4 @@ public class PetBreed : BaseEntity<Guid>
 
         return new PetBreed(name);
     }
-
-    public Result UpdateName(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            return Result.Failure("Name should not be empty");
-
-        Name = name;
-
-        return Result.Success();
-    }
 }
