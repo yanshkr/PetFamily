@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PetFamily.Domain.Ids;
-public record VolunteerId
+public class VolunteerId : ComparableValueObject
 {
     private VolunteerId(Guid value)
     {
@@ -17,4 +18,9 @@ public record VolunteerId
     public static VolunteerId NewVolunteerId => new(Guid.NewGuid());
     public static VolunteerId FromGuid(Guid guid) => new(guid);
     public static VolunteerId Empty() => new(Guid.Empty);
+
+    protected override IEnumerable<IComparable> GetComparableEqualityComponents()
+    {
+        yield return Value;
+    }
 }

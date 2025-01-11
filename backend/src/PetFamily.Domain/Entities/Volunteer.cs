@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities;
-public class Volunteer : BaseEntity<Guid>
+public class Volunteer : BaseEntity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
     private readonly List<PaymentInfo> _paymentInfos = [];

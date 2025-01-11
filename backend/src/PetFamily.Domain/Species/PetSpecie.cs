@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Species;
-public class PetSpecie : BaseEntity<Guid>
+public class PetSpecie : BaseEntity<PetSpecieId>
 {
     private readonly List<PetBreed> _breeds = [];
     private PetSpecie(

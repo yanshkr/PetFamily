@@ -1,11 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities;
-public class Pet : BaseEntity<Guid>
+public class Pet : BaseEntity<PetId>
 {
     private readonly List<Vaccine> _vaccines = [];
     private readonly List<PaymentInfo> _paymentInfos = [];
@@ -119,4 +120,9 @@ public class Pet : BaseEntity<Guid>
             status
             );
     }
+}
+
+public record VaccinesInfo
+{
+
 }
