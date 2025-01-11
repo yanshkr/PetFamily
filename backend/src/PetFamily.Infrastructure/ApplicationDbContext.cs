@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace PetFamily.Infrastructure;
 public class ApplicationDbContext(IConfiguration configuration) : DbContext
@@ -10,5 +11,6 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     {
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE));
         optionsBuilder.UseSnakeCaseNamingConvention();
+        optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
     }
 }
