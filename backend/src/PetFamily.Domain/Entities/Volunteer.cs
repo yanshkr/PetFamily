@@ -12,6 +12,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     private readonly List<SocialMedia> _socialMedias = [];
 
     private Volunteer(
+        VolunteerId id,
         string name,
         string surname,
         string patronymic,
@@ -21,6 +22,7 @@ public class Volunteer : BaseEntity<VolunteerId>
         PhoneNumber phoneNumber
         ) : base()
     {
+        Id = id;
         Name = name;
         Surname = surname;
         Patronymic = patronymic;
@@ -43,6 +45,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     public IReadOnlyCollection<SocialMedia> SocialMedias => _socialMedias;
 
     public static Result<Volunteer, string> Create(
+        VolunteerId id,
         string name,
         string surname,
         string patronymic,
@@ -68,6 +71,7 @@ public class Volunteer : BaseEntity<VolunteerId>
             return "Description should not be empty";
 
         return new Volunteer(
+            id,
             name,
             surname,
             patronymic,

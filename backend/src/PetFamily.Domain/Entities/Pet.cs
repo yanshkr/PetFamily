@@ -12,6 +12,7 @@ public class Pet : BaseEntity<PetId>
     private readonly List<PaymentInfo> _paymentInfos = [];
 
     private Pet(
+        PetId id,
         string name,
         string description,
         PetType type,
@@ -28,6 +29,7 @@ public class Pet : BaseEntity<PetId>
         PetStatus status
         ) : base()
     {
+        Id = id;
         Name = name;
         Description = description;
         Type = type;
@@ -66,6 +68,7 @@ public class Pet : BaseEntity<PetId>
 
 
     public static Result<Pet, string> Create(
+        PetId id,
         string name,
         string description,
         PetType type,
@@ -104,6 +107,7 @@ public class Pet : BaseEntity<PetId>
             return "PetStatus cannot be undefined";
 
         return new Pet(
+            id,
             name,
             description,
             type,

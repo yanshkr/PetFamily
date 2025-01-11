@@ -7,9 +7,11 @@ public class PetSpecie : BaseEntity<PetSpecieId>
 {
     private readonly List<PetBreed> _breeds = [];
     private PetSpecie(
+        PetSpecieId id,
         string name
         )
     {
+        Id = id;
         Name = name;
     }
 

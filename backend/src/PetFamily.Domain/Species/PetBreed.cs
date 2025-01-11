@@ -6,9 +6,11 @@ namespace PetFamily.Domain.Species;
 public class PetBreed : BaseEntity<PetBreedId>
 {
     private PetBreed(
+        PetBreedId id,
         string name
         )
     {
+        Id = id;
         Name = name;
     }
 
