@@ -4,13 +4,13 @@ namespace PetFamily.Domain.ValueObjects;
 public record HeightMeasurement
 {
     private HeightMeasurement(
-        uint value
+        uint centimeters
         )
     {
-        Value = value;
+        Centimeters = centimeters;
     }
 
-    public uint Value { get; }
+    public uint Centimeters { get; }
 
     public static Result<HeightMeasurement, string> CreateFromCentimeters(
         uint centimeters

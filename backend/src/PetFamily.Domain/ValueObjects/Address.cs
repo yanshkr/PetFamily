@@ -49,4 +49,14 @@ public record Address
 
         return new Address(country, state, city, street, zipCode);
     }
+
+    public override string ToString()
+    {
+        return $"{Street}, {City}, {State}, {Country}, {ZipCode}";
+    }
+    public static Address FromString(string address)
+    {
+        var parts = address.Split(", ");
+        return new Address(parts[3], parts[2], parts[1], parts[0], uint.Parse(parts[4]));
+    }
 }

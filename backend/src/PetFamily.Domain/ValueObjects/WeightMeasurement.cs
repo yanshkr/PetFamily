@@ -5,10 +5,10 @@ public record WeightMeasurement
         uint grams
         )
     {
-        Value = grams;
+        Grams = grams;
     }
 
-    public uint Value { get; }
+    public uint Grams { get; }
 
     public static WeightMeasurement CreateFromGrams(uint grams)
     {

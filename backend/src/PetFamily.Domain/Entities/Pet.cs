@@ -8,8 +8,13 @@ using PetFamily.Domain.ValueObjects;
 namespace PetFamily.Domain.Entities;
 public class Pet : BaseEntity<PetId>
 {
-    private readonly List<Vaccine> _vaccines = [];
+
     private readonly List<PaymentInfo> _paymentInfos = [];
+    private readonly List<Vaccine> _vaccines = [];
+
+    public Volunteer Volunteer { get; private set; } = null!;
+
+    private Pet() { }
 
     private Pet(
         PetId id,
@@ -124,9 +129,4 @@ public class Pet : BaseEntity<PetId>
             status
             );
     }
-}
-
-public record VaccinesInfo
-{
-
 }

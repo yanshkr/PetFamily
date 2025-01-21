@@ -1,9 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetFamily.Domain.Ids;
 public class PetId : ComparableValueObject
@@ -15,7 +10,7 @@ public class PetId : ComparableValueObject
 
     public Guid Value { get; }
 
-    public static PetId NewPetId => new (Guid.NewGuid());
+    public static PetId NewPetId => new(Guid.NewGuid());
     public static PetId FromGuid(Guid guid) => new(guid);
     public static PetId Empty() => new(Guid.Empty);
 
