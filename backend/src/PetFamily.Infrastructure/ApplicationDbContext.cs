@@ -10,6 +10,11 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
 
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE));
