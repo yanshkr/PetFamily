@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Entities;
 using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.ValueObjects;
 using PetFamily.Infrastructure.Configurations.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -27,28 +28,33 @@ internal class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             {
                 fb.Property(f => f.FirstName)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(FullName.MAX_VALUE_LENGTH)
                     .HasColumnName("first_name");
 
                 fb.Property(f => f.MiddleName)
                 .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(FullName.MAX_VALUE_LENGTH)
                     .HasColumnName("middle_name");
 
                 fb.Property(f => f.LastName)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(FullName.MAX_VALUE_LENGTH)
                     .HasColumnName("last_name");
             });
 
-        builder.Property(v => v.Email)
-            .IsRequired(true)
-            .HasMaxLength(Constants.Volunteer.EMAIL_MAX_LENGTH)
-            .HasColumnName("email");
+        builder.ComplexProperty(
+            v => v.Email,
+            pb =>
+            {
+                pb.Property(p => p.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Email.MAX_EMAIL_LENGTH)
+                    .HasColumnName("email");
+            });
 
         builder.Property(v => v.Description)
             .IsRequired(true)
-            .HasMaxLength(Constants.Shared.DESCRIPTION_MAX_LENGTH)
+            .HasMaxLength(Volunteer.MAX_DESCRIPTION_LENGTH)
             .HasColumnName("description");
 
         builder.Property(v => v.ExperienceYears)

@@ -22,7 +22,7 @@ internal class BreedConfiguration : IEntityTypeConfiguration<PetBreed>
 
         builder.Property(b => b.Name)
             .IsRequired(true)
-            .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+            .HasMaxLength(PetBreed.MAX_NAME_LENGTH)
             .HasColumnName("name");
     }
 }

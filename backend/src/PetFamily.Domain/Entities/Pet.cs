@@ -8,6 +8,10 @@ using PetFamily.Domain.ValueObjects;
 namespace PetFamily.Domain.Entities;
 public class Pet : BaseEntity<PetId>
 {
+    public const int MAX_NAME_LENGTH = 100;
+    public const int MAX_DESCRIPTION_LENGTH = 500;
+    public const int MAX_COLOR_LENGTH = 50;
+    public const int MAX_HEALTH_INFO_LENGTH = 500;
 
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<Vaccine> _vaccines = [];
@@ -90,19 +94,19 @@ public class Pet : BaseEntity<PetId>
         PetStatus status
         )
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
             return "Name cannot be empty";
 
-        if (string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
             return "Description cannot be empty";
 
         if (type == PetType.Undefined)
             return "PetType cannot be undefined";
 
-        if (string.IsNullOrWhiteSpace(color))
+        if (string.IsNullOrWhiteSpace(color) || color.Length <= MAX_COLOR_LENGTH)
             return "Color cannot be empty";
 
-        if (string.IsNullOrWhiteSpace(healthInfo))
+        if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length <= MAX_HEALTH_INFO_LENGTH)
             return "HealthInfo cannot be empty";
 
         if (birthDate == default)

@@ -3,6 +3,11 @@
 namespace PetFamily.Domain.ValueObjects;
 public record Address
 {
+    public const int MAX_VALUE_LENGTH = 200;
+
+    public const int MIN_ZIP_CODE_VALUE = 1;
+    public const int MAX_ZIP_CODE_VALUE = 99999;
+
     private Address(
         string country,
         string state,
@@ -32,31 +37,21 @@ public record Address
         uint zipCode
         )
     {
-        if (string.IsNullOrWhiteSpace(country))
-            return "Country should not be empty";
+        if (string.IsNullOrWhiteSpace(country) || country.Length <= MAX_VALUE_LENGTH)
+            return $"Country should not be longer than {MAX_VALUE_LENGTH} characters";
 
-        if (string.IsNullOrWhiteSpace(state))
-            return "State should not be empty";
+        if (string.IsNullOrWhiteSpace(state) || state.Length <= MAX_VALUE_LENGTH)
+            return $"State should not be longer than {MAX_VALUE_LENGTH} characters";
 
-        if (string.IsNullOrWhiteSpace(city))
-            return "City should not be empty";
+        if (string.IsNullOrWhiteSpace(city) || city.Length <= MAX_VALUE_LENGTH)
+            return $"City should not be longer than {MAX_VALUE_LENGTH} characters";
 
-        if (string.IsNullOrWhiteSpace(street))
-            return "Street should not be empty";
+        if (string.IsNullOrWhiteSpace(street) || street.Length <= MAX_VALUE_LENGTH)
+            return $"Street should not be longer than {MAX_VALUE_LENGTH} characters";
 
-        if (zipCode is > 0 and < 99999)
+        if (zipCode is >= MIN_ZIP_CODE_VALUE and < MAX_ZIP_CODE_VALUE)
             return "ZipCode should not be empty";
 
         return new Address(country, state, city, street, zipCode);
-    }
-
-    public override string ToString()
-    {
-        return $"{Street}, {City}, {State}, {Country}, {ZipCode}";
-    }
-    public static Address FromString(string address)
-    {
-        var parts = address.Split(", ");
-        return new Address(parts[3], parts[2], parts[1], parts[0], uint.Parse(parts[4]));
     }
 }

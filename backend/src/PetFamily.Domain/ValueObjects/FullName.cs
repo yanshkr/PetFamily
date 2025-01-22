@@ -4,6 +4,8 @@ using PetFamily.Domain.Shared;
 namespace PetFamily.Domain.ValueObjects;
 public record FullName
 {
+    public const int MAX_VALUE_LENGTH = 100;
+
     private FullName(
         string firstName,
         string middleName,
@@ -25,23 +27,14 @@ public record FullName
         string lastName
         )
     {
-        if (string.IsNullOrWhiteSpace(firstName))
+        if (string.IsNullOrWhiteSpace(firstName) || firstName.Length <= MAX_VALUE_LENGTH)
             return "First name should not be empty";
 
-        if (string.IsNullOrWhiteSpace(middleName))
+        if (string.IsNullOrWhiteSpace(middleName) || middleName.Length <= MAX_VALUE_LENGTH)
             return "Middle name should not be empty";
 
-        if (string.IsNullOrWhiteSpace(lastName))
+        if (string.IsNullOrWhiteSpace(lastName) || lastName.Length <= MAX_VALUE_LENGTH)
             return "Last name should not be empty";
-
-        if (firstName.Length is > 0 and < Constants.Shared.NAME_MAX_LENGTH)
-            return $"First name should not be longer than {Constants.Shared.NAME_MAX_LENGTH} characters";
-
-        if (middleName.Length is > 0 and < Constants.Shared.NAME_MAX_LENGTH)
-            return $"Middle name should not be longer than {Constants.Shared.NAME_MAX_LENGTH} characters";
-
-        if (lastName.Length is > 0 and < Constants.Shared.NAME_MAX_LENGTH)
-            return $"Last name should not be longer than {Constants.Shared.NAME_MAX_LENGTH} characters";
 
         return new FullName(firstName, middleName, lastName);
     }

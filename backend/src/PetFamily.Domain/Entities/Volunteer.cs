@@ -7,6 +7,8 @@ using PetFamily.Domain.ValueObjects;
 namespace PetFamily.Domain.Entities;
 public class Volunteer : BaseEntity<VolunteerId>
 {
+    public const int MAX_DESCRIPTION_LENGTH = 500;
+
     private readonly List<Pet> _pets = [];
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<SocialMedia> _socialMedias = [];
@@ -16,7 +18,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     private Volunteer(
         VolunteerId id,
         FullName fullName,
-        string email,
+        Email email,
         string description,
         uint experienceYears,
         PhoneNumber phoneNumber
@@ -31,7 +33,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     }
 
     public FullName FullName { get; private set; }
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
     public string Description { get; private set; }
     public uint ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
@@ -43,17 +45,14 @@ public class Volunteer : BaseEntity<VolunteerId>
     public static Result<Volunteer, string> Create(
         VolunteerId id,
         FullName fullName,
-        string email,
+        Email email,
         string description,
         uint experienceYears,
         PhoneNumber phoneNumber
         )
     {
 
-        if (string.IsNullOrWhiteSpace(email))
-            return "Email should not be empty";
-
-        if (string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
             return "Description should not be empty";
 
         return new Volunteer(

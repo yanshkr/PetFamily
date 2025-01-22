@@ -4,6 +4,7 @@ using PetFamily.Domain.Entities;
 using PetFamily.Domain.Enums;
 using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.ValueObjects;
 using PetFamily.Infrastructure.Configurations.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -24,12 +25,12 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(p => p.Name)
             .IsRequired(true)
-            .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+            .HasMaxLength(Pet.MAX_NAME_LENGTH)
             .HasColumnName("name");
 
         builder.Property(p => p.Description)
             .IsRequired(true)
-            .HasMaxLength(Constants.Shared.DESCRIPTION_MAX_LENGTH)
+            .HasMaxLength(Pet.MAX_DESCRIPTION_LENGTH)
             .HasColumnName("description");
 
         builder.Property(p => p.Type)
@@ -53,12 +54,12 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(p => p.Color)
             .IsRequired(true)
-            .HasMaxLength(Constants.Pet.COLOR_MAX_LENGTH)
+            .HasMaxLength(Pet.MAX_COLOR_LENGTH)
             .HasColumnName("color");
 
         builder.Property(p => p.HealthInfo)
             .IsRequired(true)
-            .HasMaxLength(Constants.Shared.DESCRIPTION_MAX_LENGTH)
+            .HasMaxLength(Pet.MAX_HEALTH_INFO_LENGTH)
             .HasColumnName("health_info");
 
         builder.ComplexProperty(
@@ -67,22 +68,22 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             {
                 ab.Property(a => a.Country)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(Address.MAX_VALUE_LENGTH)
                     .HasColumnName("country");
 
                 ab.Property(a => a.State)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(Address.MAX_VALUE_LENGTH)
                     .HasColumnName("state");
 
                 ab.Property(a => a.City)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(Address.MAX_VALUE_LENGTH)
                     .HasColumnName("city");
 
                 ab.Property(a => a.Street)
                     .IsRequired(true)
-                    .HasMaxLength(Constants.Shared.NAME_MAX_LENGTH)
+                    .HasMaxLength(Address.MAX_VALUE_LENGTH)
                     .HasColumnName("street");
 
                 ab.Property(a => a.ZipCode)

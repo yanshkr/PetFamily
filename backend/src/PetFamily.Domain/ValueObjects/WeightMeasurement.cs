@@ -1,6 +1,11 @@
-﻿namespace PetFamily.Domain.ValueObjects;
+﻿using CSharpFunctionalExtensions;
+
+namespace PetFamily.Domain.ValueObjects;
 public record WeightMeasurement
 {
+    public const int MIN_VALUE = 1;
+    public const int MAX_VALUE = 100000;
+
     private WeightMeasurement(
         uint grams
         )
@@ -10,12 +15,15 @@ public record WeightMeasurement
 
     public uint Grams { get; }
 
-    public static WeightMeasurement CreateFromGrams(uint grams)
+    public static Result<WeightMeasurement, string> CreateFromGrams(uint grams)
     {
+        if (grams is > MIN_VALUE and < MAX_VALUE)
+            return "Weight should be between 1 and 100000 grams";
+
         return new WeightMeasurement(grams);
     }
-    public static WeightMeasurement CreateFromKilograms(decimal kilograms)
+    public static Result<WeightMeasurement, string> CreateFromKilograms(decimal kilograms)
     {
-        return new WeightMeasurement((uint)Math.Round(kilograms * 1000));
+        return CreateFromGrams((uint)Math.Round(kilograms * 1000));
     }
 }

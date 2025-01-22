@@ -5,6 +5,8 @@ using PetFamily.Domain.Shared;
 namespace PetFamily.Domain.Species;
 public class PetBreed : BaseEntity<PetBreedId>
 {
+    public const int MAX_NAME_LENGTH = 100;
+
     public PetSpecie Specie { get; private set; } = null!;
 
     private PetBreed() { }
@@ -25,7 +27,7 @@ public class PetBreed : BaseEntity<PetBreedId>
         string name
         )
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
             return "Name should not be empty";
 
         return new PetBreed(id, name);

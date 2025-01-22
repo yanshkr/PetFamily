@@ -1,8 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
+using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
 public record PhoneNumber
 {
+    private const string PHONE_NUMBER_REGEX = @"^\+[1-9]\d{1,14}$";
+    public const int MAX_PHONE_NUMBER_LENGTH = 15;
+
     private PhoneNumber(
         string value
         )
@@ -16,8 +20,8 @@ public record PhoneNumber
         string number
         )
     {
-        if (number.ToString().Length is <= 7 or > 10)
-            return "Phone number should be between  and 11 digits";
+        if (!Regex.IsMatch(number, PHONE_NUMBER_REGEX) || number.Length <= MAX_PHONE_NUMBER_LENGTH)
+            return "Phone number is not valid";
 
         return new PhoneNumber(number);
     }
