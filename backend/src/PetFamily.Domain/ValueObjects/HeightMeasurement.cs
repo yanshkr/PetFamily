@@ -3,21 +3,24 @@
 namespace PetFamily.Domain.ValueObjects;
 public record HeightMeasurement
 {
+    private const int MIN_VALUE = 1;
+    private const int MAX_VALUE = 100;
+
     private HeightMeasurement(
-        uint value
+        uint centimeters
         )
     {
-        Value = value;
+        Centimeters = centimeters;
     }
 
-    public uint Value { get; }
+    public uint Centimeters { get; }
 
     public static Result<HeightMeasurement, string> CreateFromCentimeters(
         uint centimeters
         )
     {
-        if (centimeters < 0)
-            return "Centimeters should not be negative";
+        if (centimeters is > MIN_VALUE and < MAX_VALUE)
+            return $"Height should be between {MIN_VALUE} and {MAX_VALUE} centimeters";
 
         return new HeightMeasurement(centimeters);
     }
@@ -25,18 +28,12 @@ public record HeightMeasurement
         uint inches
         )
     {
-        if (inches < 0)
-            return "Inches should not be negative";
-
-        return new HeightMeasurement((uint)Math.Round(inches * 2.54));
+        return CreateFromCentimeters((uint)Math.Round(inches * 2.54));
     }
     public static Result<HeightMeasurement, string> CreateFromMetres(
         decimal metres
         )
     {
-        if (metres < 0)
-            return "Metres should not be negative";
-
-        return new HeightMeasurement((uint)Math.Round(metres * 100));
+        return CreateFromCentimeters((uint)Math.Round(metres * 100));
     }
 }

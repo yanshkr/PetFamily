@@ -1,75 +1,63 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities;
-public class Volunteer : BaseEntity<Guid>
+public class Volunteer : BaseEntity<VolunteerId>
 {
+    public const int MAX_DESCRIPTION_LENGTH = 500;
+
     private readonly List<Pet> _pets = [];
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<SocialMedia> _socialMedias = [];
 
+    private Volunteer() { }
+
     private Volunteer(
-        string name,
-        string surname,
-        string patronymic,
-        string email,
+        VolunteerId id,
+        FullName fullName,
+        Email email,
         string description,
         uint experienceYears,
         PhoneNumber phoneNumber
         ) : base()
     {
-        Name = name;
-        Surname = surname;
-        Patronymic = patronymic;
+        Id = id;
+        FullName = fullName;
         Email = email;
         Description = description;
         ExperienceYears = experienceYears;
         PhoneNumber = phoneNumber;
     }
 
-    public string Name { get; private set; }
-    public string Surname { get; private set; }
-    public string Patronymic { get; private set; }
-    public string Email { get; private set; }
+    public FullName FullName { get; private set; }
+    public Email Email { get; private set; }
     public string Description { get; private set; }
     public uint ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public IReadOnlyCollection<Pet> Pets => _pets;
-    public IReadOnlyCollection<PaymentInfo> PaymentInfos => _paymentInfos;
-    public IReadOnlyCollection<SocialMedia> SocialMedias => _socialMedias;
+    public IReadOnlyList<Pet> Pets => _pets;
+    public IReadOnlyList<PaymentInfo> PaymentInfos => _paymentInfos;
+    public IReadOnlyList<SocialMedia> SocialMedias => _socialMedias;
 
     public static Result<Volunteer, string> Create(
-        string name,
-        string surname,
-        string patronymic,
-        string email,
+        VolunteerId id,
+        FullName fullName,
+        Email email,
         string description,
         uint experienceYears,
         PhoneNumber phoneNumber
         )
     {
-        if (string.IsNullOrWhiteSpace(name))
-            return "Name should not be empty";
 
-        if (string.IsNullOrWhiteSpace(surname))
-            return "Surname should not be empty";
-
-        if (string.IsNullOrWhiteSpace(patronymic))
-            return "Patronymic should not be empty";
-
-        if (string.IsNullOrWhiteSpace(email))
-            return "Email should not be empty";
-
-        if (string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
             return "Description should not be empty";
 
         return new Volunteer(
-            name,
-            surname,
-            patronymic,
+            id,
+            fullName,
             email,
             description,
             experienceYears,

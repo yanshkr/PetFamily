@@ -1,16 +1,27 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities;
-public class Pet : BaseEntity<Guid>
+public class Pet : BaseEntity<PetId>
 {
-    private readonly List<Vaccine> _vaccines = [];
+    public const int MAX_NAME_LENGTH = 100;
+    public const int MAX_DESCRIPTION_LENGTH = 500;
+    public const int MAX_COLOR_LENGTH = 50;
+    public const int MAX_HEALTH_INFO_LENGTH = 500;
+
     private readonly List<PaymentInfo> _paymentInfos = [];
+    private readonly List<Vaccine> _vaccines = [];
+
+    public Volunteer Volunteer { get; private set; } = null!;
+
+    private Pet() { }
 
     private Pet(
+        PetId id,
         string name,
         string description,
         PetType type,
@@ -27,6 +38,7 @@ public class Pet : BaseEntity<Guid>
         PetStatus status
         ) : base()
     {
+        Id = id;
         Name = name;
         Description = description;
         Type = type;
@@ -65,6 +77,7 @@ public class Pet : BaseEntity<Guid>
 
 
     public static Result<Pet, string> Create(
+        PetId id,
         string name,
         string description,
         PetType type,
@@ -81,19 +94,19 @@ public class Pet : BaseEntity<Guid>
         PetStatus status
         )
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
             return "Name cannot be empty";
 
-        if (string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
             return "Description cannot be empty";
 
         if (type == PetType.Undefined)
             return "PetType cannot be undefined";
 
-        if (string.IsNullOrWhiteSpace(color))
+        if (string.IsNullOrWhiteSpace(color) || color.Length <= MAX_COLOR_LENGTH)
             return "Color cannot be empty";
 
-        if (string.IsNullOrWhiteSpace(healthInfo))
+        if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length <= MAX_HEALTH_INFO_LENGTH)
             return "HealthInfo cannot be empty";
 
         if (birthDate == default)
@@ -103,6 +116,7 @@ public class Pet : BaseEntity<Guid>
             return "PetStatus cannot be undefined";
 
         return new Pet(
+            id,
             name,
             description,
             type,

@@ -1,31 +1,28 @@
 ﻿using CSharpFunctionalExtensions;
+using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
 public record PhoneNumber
 {
+    private const string PHONE_NUMBER_REGEX = @"^\+[1-9]\d{1,14}$";
+    public const int MAX_PHONE_NUMBER_LENGTH = 15;
+
     private PhoneNumber(
-        uint countryCode,
-        ulong number
+        string value
         )
     {
-        CountryCode = countryCode;
-        Value = number;
+        Value = value;
     }
 
-    public uint CountryCode { get; }
-    public ulong Value { get; }
+    public string Value { get; }
 
     public static Result<PhoneNumber, string> Create(
-        uint countryCode,
-        ulong number
+        string number
         )
     {
-        if (countryCode is < 1 or > 999)
-            return "Country code should be between 1 and 999";
+        if (!Regex.IsMatch(number, PHONE_NUMBER_REGEX) || number.Length <= MAX_PHONE_NUMBER_LENGTH)
+            return "Phone number is not valid";
 
-        if (number.ToString().Length is <= 7 or > 10)
-            return "Phone number should be between  and 11 digits";
-
-        return new PhoneNumber(countryCode, number);
+        return new PhoneNumber(number);
     }
 }

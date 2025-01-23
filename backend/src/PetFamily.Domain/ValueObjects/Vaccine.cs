@@ -3,6 +3,9 @@
 namespace PetFamily.Domain.ValueObjects;
 public class Vaccine
 {
+    public const int MAX_NAME_LENGTH = 100;
+    public const int MAX_DESCRIPTION_LENGTH = 1000;
+
     private Vaccine(
         string name,
         string description,
@@ -24,10 +27,10 @@ public class Vaccine
         DateTime date
         )
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
             return "Name should not be empty";
 
-        if (string.IsNullOrWhiteSpace(description))
+        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
             return "Description should not be empty";
 
         if (date == default)
