@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.ValueObjects;
 public record WeightMeasurement
@@ -15,14 +16,14 @@ public record WeightMeasurement
 
     public uint Grams { get; }
 
-    public static Result<WeightMeasurement, string> CreateFromGrams(uint grams)
+    public static Result<WeightMeasurement, Error> CreateFromGrams(uint grams)
     {
-        if (grams is > MIN_VALUE and < MAX_VALUE)
-            return "Weight should be between 1 and 100000 grams";
+        if (grams is >= MIN_VALUE and <= MAX_VALUE)
+            return Errors.General.ValueIsInvalid("Weight", MIN_VALUE, MAX_VALUE);
 
         return new WeightMeasurement(grams);
     }
-    public static Result<WeightMeasurement, string> CreateFromKilograms(decimal kilograms)
+    public static Result<WeightMeasurement, Error> CreateFromKilograms(decimal kilograms)
     {
         return CreateFromGrams((uint)Math.Round(kilograms * 1000));
     }

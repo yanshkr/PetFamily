@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.ValueObjects;
 public record Address
@@ -29,7 +30,7 @@ public record Address
     public string Street { get; }
     public uint ZipCode { get; }
 
-    public static Result<Address, string> Create(
+    public static Result<Address, Error> Create(
         string country,
         string state,
         string city,
@@ -37,20 +38,20 @@ public record Address
         uint zipCode
         )
     {
-        if (string.IsNullOrWhiteSpace(country) || country.Length <= MAX_VALUE_LENGTH)
-            return $"Country should not be longer than {MAX_VALUE_LENGTH} characters";
+        if (string.IsNullOrWhiteSpace(country) || country.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("Country");
 
-        if (string.IsNullOrWhiteSpace(state) || state.Length <= MAX_VALUE_LENGTH)
-            return $"State should not be longer than {MAX_VALUE_LENGTH} characters";
+        if (string.IsNullOrWhiteSpace(state) || state.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("State");
 
-        if (string.IsNullOrWhiteSpace(city) || city.Length <= MAX_VALUE_LENGTH)
-            return $"City should not be longer than {MAX_VALUE_LENGTH} characters";
+        if (string.IsNullOrWhiteSpace(city) || city.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("City");
 
-        if (string.IsNullOrWhiteSpace(street) || street.Length <= MAX_VALUE_LENGTH)
-            return $"Street should not be longer than {MAX_VALUE_LENGTH} characters";
+        if (string.IsNullOrWhiteSpace(street) || street.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("Street");
 
-        if (zipCode is >= MIN_ZIP_CODE_VALUE and < MAX_ZIP_CODE_VALUE)
-            return "ZipCode should not be empty";
+        if (zipCode is >= MIN_ZIP_CODE_VALUE and <= MAX_ZIP_CODE_VALUE)
+            return Errors.General.ValueIsInvalid("ZipCode", MIN_ZIP_CODE_VALUE, MAX_ZIP_CODE_VALUE);
 
         return new Address(country, state, city, street, zipCode);
     }

@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
@@ -19,16 +20,16 @@ public record SocialMedia
     public string Name { get; }
     public string Url { get; }
 
-    public static Result<SocialMedia, string> Create(
+    public static Result<SocialMedia, Error> Create(
         string name,
         string url
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
-            return "Name should not be empty";
+        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
+            return Errors.General.ValueIsInvalid("Name");
 
         if (!Regex.IsMatch(url, URL_REGEX))
-            return "Url is not valid";
+            return Errors.General.ValueIsInvalid("Url");
 
         return new SocialMedia(name, url);
     }

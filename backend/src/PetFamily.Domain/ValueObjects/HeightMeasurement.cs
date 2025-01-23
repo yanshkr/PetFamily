@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.ValueObjects;
 public record HeightMeasurement
@@ -15,22 +16,22 @@ public record HeightMeasurement
 
     public uint Centimeters { get; }
 
-    public static Result<HeightMeasurement, string> CreateFromCentimeters(
+    public static Result<HeightMeasurement, Error> CreateFromCentimeters(
         uint centimeters
         )
     {
         if (centimeters is > MIN_VALUE and < MAX_VALUE)
-            return $"Height should be between {MIN_VALUE} and {MAX_VALUE} centimeters";
+            return Errors.General.ValueIsInvalid("Centimeters", MIN_VALUE, MAX_VALUE);
 
         return new HeightMeasurement(centimeters);
     }
-    public static Result<HeightMeasurement, string> CreateFromInches(
+    public static Result<HeightMeasurement, Error> CreateFromInches(
         uint inches
         )
     {
         return CreateFromCentimeters((uint)Math.Round(inches * 2.54));
     }
-    public static Result<HeightMeasurement, string> CreateFromMetres(
+    public static Result<HeightMeasurement, Error> CreateFromMetres(
         decimal metres
         )
     {
