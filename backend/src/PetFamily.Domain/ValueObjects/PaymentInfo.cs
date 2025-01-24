@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
@@ -19,16 +20,16 @@ public record PaymentInfo
     public string Name { get; }
     public string Address { get; }
 
-    public static Result<PaymentInfo, string> Create(
+    public static Result<PaymentInfo, Error> Create(
         string name,
         string address
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
-            return "Name should not be empty";
+        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
+            return Errors.General.ValueIsInvalid("Name");
 
         if (!Regex.IsMatch(address, CREDIT_CARD_REGEX))
-            return "Address is not valid";
+            return Errors.General.ValueIsInvalid("Address");
 
         return new PaymentInfo(name, address);
     }

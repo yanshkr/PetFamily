@@ -21,20 +21,20 @@ public record FullName
     public string MiddleName { get; }
     public string LastName { get; }
 
-    public static Result<FullName, string> Create(
+    public static Result<FullName, Error> Create(
         string firstName,
         string middleName,
         string lastName
         )
     {
-        if (string.IsNullOrWhiteSpace(firstName) || firstName.Length <= MAX_VALUE_LENGTH)
-            return "First name should not be empty";
+        if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("FirstName");
 
-        if (string.IsNullOrWhiteSpace(middleName) || middleName.Length <= MAX_VALUE_LENGTH)
-            return "Middle name should not be empty";
+        if (string.IsNullOrWhiteSpace(middleName) || middleName.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("MiddleName");
 
-        if (string.IsNullOrWhiteSpace(lastName) || lastName.Length <= MAX_VALUE_LENGTH)
-            return "Last name should not be empty";
+        if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > MAX_VALUE_LENGTH)
+            return Errors.General.ValueIsInvalid("LastName");
 
         return new FullName(firstName, middleName, lastName);
     }

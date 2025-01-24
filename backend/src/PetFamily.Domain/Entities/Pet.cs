@@ -10,6 +10,7 @@ public class Pet : BaseEntity<PetId>
 {
     public const int MAX_NAME_LENGTH = 100;
     public const int MAX_DESCRIPTION_LENGTH = 500;
+
     public const int MAX_COLOR_LENGTH = 50;
     public const int MAX_HEALTH_INFO_LENGTH = 500;
 
@@ -75,8 +76,7 @@ public class Pet : BaseEntity<PetId>
 
     public PetStatus Status { get; private set; }
 
-
-    public static Result<Pet, string> Create(
+    public static Result<Pet, Error> Create(
         PetId id,
         string name,
         string description,
@@ -94,26 +94,26 @@ public class Pet : BaseEntity<PetId>
         PetStatus status
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
-            return "Name cannot be empty";
+        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
+            return Errors.General.ValueIsInvalid("Name");
 
-        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
-            return "Description cannot be empty";
+        if (string.IsNullOrWhiteSpace(description) || description.Length > MAX_DESCRIPTION_LENGTH)
+            return Errors.General.ValueIsInvalid("Description");
 
         if (type == PetType.Undefined)
-            return "PetType cannot be undefined";
+            return Errors.General.ValueIsInvalid("Type");
 
-        if (string.IsNullOrWhiteSpace(color) || color.Length <= MAX_COLOR_LENGTH)
-            return "Color cannot be empty";
+        if (string.IsNullOrWhiteSpace(color) || color.Length > MAX_COLOR_LENGTH)
+            return Errors.General.ValueIsInvalid("Color");
 
-        if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length <= MAX_HEALTH_INFO_LENGTH)
-            return "HealthInfo cannot be empty";
+        if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length > MAX_HEALTH_INFO_LENGTH)
+            return Errors.General.ValueIsInvalid("HealthInfo");
 
         if (birthDate == default)
-            return "BirthDate cannot be empty";
+            return Errors.General.ValueIsInvalid("BirthDate");
 
         if (status == PetStatus.Undefined)
-            return "PetStatus cannot be undefined";
+            return Errors.General.ValueIsInvalid("Status");
 
         return new Pet(
             id,

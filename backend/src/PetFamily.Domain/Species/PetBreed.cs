@@ -22,13 +22,13 @@ public class PetBreed : BaseEntity<PetBreedId>
 
     public string Name { get; private set; }
 
-    public static Result<PetBreed, string> Create(
+    public static Result<PetBreed, Error> Create(
         PetBreedId id,
         string name
         )
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
-            return "Name should not be empty";
+            return Errors.General.ValueIsInvalid("Name");
 
         return new PetBreed(id, name);
     }

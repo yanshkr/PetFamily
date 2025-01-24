@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.ValueObjects;
 public class Vaccine
@@ -21,20 +22,20 @@ public class Vaccine
     public string Description { get; }
     public DateTime Date { get; }
 
-    public static Result<Vaccine, string> Create(
+    public static Result<Vaccine, Error> Create(
         string name,
         string description,
         DateTime date
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
-            return "Name should not be empty";
+        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
+            return Errors.General.ValueIsInvalid("Name");
 
-        if (string.IsNullOrWhiteSpace(description) || description.Length <= MAX_DESCRIPTION_LENGTH)
-            return "Description should not be empty";
+        if (string.IsNullOrWhiteSpace(description) || description.Length > MAX_DESCRIPTION_LENGTH)
+            return Errors.General.ValueIsInvalid("Description");
 
         if (date == default)
-            return "Date should not be empty";
+            return Errors.General.ValueIsInvalid("Date");
 
         return new Vaccine(name, description, date);
     }
