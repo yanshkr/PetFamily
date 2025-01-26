@@ -1,3 +1,4 @@
+using PetFamily.Api;
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 
@@ -8,7 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
       .AddInfrastructure()
-      .AddApplication();
+      .AddApplication()
+      .AddApi();
 
 var app = builder.Build();
 
