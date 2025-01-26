@@ -1,35 +1,33 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species;
+using PetFamily.Domain.Species.Entities;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Ids;
 
-namespace PetFamily.Domain.Entities;
+namespace PetFamily.Domain.Volunteers.Entities;
 public class Pet : BaseEntity<PetId>
 {
-    public const int MAX_NAME_LENGTH = 100;
-    public const int MAX_DESCRIPTION_LENGTH = 500;
-
-    public const int MAX_COLOR_LENGTH = 50;
-    public const int MAX_HEALTH_INFO_LENGTH = 500;
-
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<Vaccine> _vaccines = [];
 
     public Volunteer Volunteer { get; private set; } = null!;
 
+#pragma warning disable CS8618
     private Pet() { }
+#pragma warning restore CS8618
 
     private Pet(
         PetId id,
-        string name,
-        string description,
+        Name name,
+        Description description,
         PetType type,
         PetBreed breed,
         PetSpecie specie,
-        string color,
-        string healthInfo,
+        Color color,
+        HealthInfo healthInfo,
         Address address,
         PhoneNumber phoneNumber,
         WeightMeasurement weight,
@@ -56,13 +54,13 @@ public class Pet : BaseEntity<PetId>
         Status = status;
     }
 
-    public string Name { get; private set; }
-    public string Description { get; private set; }
+    public Name Name { get; private set; }
+    public Description Description { get; private set; }
     public PetType Type { get; private set; }
     public PetBreed Breed { get; private set; }
     public PetSpecie Specie { get; private set; }
-    public string Color { get; private set; }
-    public string HealthInfo { get; private set; }
+    public Color Color { get; private set; }
+    public HealthInfo HealthInfo { get; private set; }
     public Address Address { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public WeightMeasurement Weight { get; private set; }
@@ -78,13 +76,13 @@ public class Pet : BaseEntity<PetId>
 
     public static Result<Pet, Error> Create(
         PetId id,
-        string name,
-        string description,
+        Name name,
+        Description description,
         PetType type,
         PetBreed breed,
         PetSpecie specie,
-        string color,
-        string healthInfo,
+        Color color,
+        HealthInfo healthInfo,
         Address address,
         PhoneNumber phoneNumber,
         WeightMeasurement weight,
@@ -94,20 +92,8 @@ public class Pet : BaseEntity<PetId>
         PetStatus status
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
-            return Errors.General.ValueIsInvalid("Name");
-
-        if (string.IsNullOrWhiteSpace(description) || description.Length > MAX_DESCRIPTION_LENGTH)
-            return Errors.General.ValueIsInvalid("Description");
-
         if (type == PetType.Undefined)
             return Errors.General.ValueIsInvalid("Type");
-
-        if (string.IsNullOrWhiteSpace(color) || color.Length > MAX_COLOR_LENGTH)
-            return Errors.General.ValueIsInvalid("Color");
-
-        if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length > MAX_HEALTH_INFO_LENGTH)
-            return Errors.General.ValueIsInvalid("HealthInfo");
 
         if (birthDate == default)
             return Errors.General.ValueIsInvalid("BirthDate");

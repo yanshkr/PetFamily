@@ -1,15 +1,17 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Species.Ids;
 
-namespace PetFamily.Domain.Species;
+namespace PetFamily.Domain.Species.Entities;
 public class PetBreed : BaseEntity<PetBreedId>
 {
     public const int MAX_NAME_LENGTH = 100;
 
     public PetSpecie Specie { get; private set; } = null!;
 
+#pragma warning disable CS8618
     private PetBreed() { }
+#pragma warning restore CS8618
 
     private PetBreed(
         PetBreedId id,

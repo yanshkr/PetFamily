@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace PetFamily.Domain.Ids;
+namespace PetFamily.Domain.Volunteers.Ids;
 public class PetId : ComparableValueObject
 {
     private PetId(Guid value)
