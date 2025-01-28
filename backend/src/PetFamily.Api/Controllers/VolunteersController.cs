@@ -32,4 +32,16 @@ public class VolunteersController : ControllerBase
 
         return result.ToResponse();
     }
+    [HttpPut("{id:guid}/payment-info")]
+    public async Task<IActionResult> UpdatePaymentInfo(
+        [FromRoute] Guid id,
+        [FromServices] UpdateVolunteerPaymentInfoHandler updateVolunteerPaymentInfoHandler,
+        [FromBody] UpdateVolunteerPaymentInfoDto dto,
+        CancellationToken cancellationToken)
+    {
+        var request = new UpdateVolunteerPaymentInfoRequest(VolunteerId.FromGuid(id), dto);
+        var result = await updateVolunteerPaymentInfoHandler.HandleAsync(request, cancellationToken);
+
+        return result.ToResponse();
+    }
 }
