@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Api.Extensions;
 using PetFamily.Application.Features.Volunteers.CreateVolunteer;
+using Serilog;
 
 namespace PetFamily.Api.Controllers;
 
@@ -14,7 +15,7 @@ public class VolunteersController : ControllerBase
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await createVolunteerHandler.HandleAsync(request, cancellationToken);
+       var result = await createVolunteerHandler.HandleAsync(request, cancellationToken);
 
         return result.ToResponse();
     }
