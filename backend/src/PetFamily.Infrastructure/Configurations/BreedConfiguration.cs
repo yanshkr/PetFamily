@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Ids;
-using PetFamily.Domain.Species;
+using PetFamily.Domain.Species.Entities;
+using PetFamily.Domain.Species.Ids;
 
 namespace PetFamily.Infrastructure.Configurations;
 internal class BreedConfiguration : IEntityTypeConfiguration<PetBreed>

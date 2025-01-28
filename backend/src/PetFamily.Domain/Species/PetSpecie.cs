@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Species.Entities;
+using PetFamily.Domain.Species.Ids;
 
 namespace PetFamily.Domain.Species;
 public class PetSpecie : BaseEntity<PetSpecieId>
@@ -9,7 +10,9 @@ public class PetSpecie : BaseEntity<PetSpecieId>
 
     private readonly List<PetBreed> _breeds = [];
 
+#pragma warning disable CS8618
     private PetSpecie() { }
+#pragma warning restore CS8618
 
     private PetSpecie(
         PetSpecieId id,

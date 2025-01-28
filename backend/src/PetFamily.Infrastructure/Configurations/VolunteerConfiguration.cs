@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers;
+using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 using PetFamily.Infrastructure.Configurations.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -51,14 +52,24 @@ internal class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .HasColumnName("email");
             });
 
-        builder.Property(v => v.Description)
-            .IsRequired(true)
-            .HasMaxLength(Volunteer.MAX_DESCRIPTION_LENGTH)
-            .HasColumnName("description");
+        builder.ComplexProperty(
+            v => v.Description,
+            db =>
+            {
+                db.Property(d => d.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Description.MAX_DESCRIPTION_LENGTH)
+                    .HasColumnName("description");
+            });
 
-        builder.Property(v => v.ExperienceYears)
-            .IsRequired(true)
-            .HasColumnName("experience_years");
+        builder.ComplexProperty(
+            v => v.ExperienceYears,
+            eb =>
+            {
+                eb.Property(e => e.Value)
+                    .IsRequired(true)
+                    .HasColumnName("experience_years");
+            });
 
         builder.ComplexProperty(
             v => v.PhoneNumber,

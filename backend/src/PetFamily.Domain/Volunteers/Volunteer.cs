@@ -1,29 +1,28 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Entities;
+using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 
-namespace PetFamily.Domain.Entities;
+namespace PetFamily.Domain.Volunteers;
 public class Volunteer : BaseEntity<VolunteerId>
 {
-    public const int MAX_DESCRIPTION_LENGTH = 500;
-
-    public const int MIN_EXPERIENCE_YEARS = 0;
-    public const int MAX_EXPERIENCE_YEARS = 100;
-
     private readonly List<Pet> _pets = [];
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<SocialMedia> _socialMedias = [];
 
+#pragma warning disable CS8618
     private Volunteer() { }
+#pragma warning restore CS8618
 
     private Volunteer(
         VolunteerId id,
         FullName fullName,
         Email email,
-        string description,
-        int experienceYears,
+        Description description,
+        ExperienceYears experienceYears,
         PhoneNumber phoneNumber
         ) : base()
     {
@@ -37,8 +36,8 @@ public class Volunteer : BaseEntity<VolunteerId>
 
     public FullName FullName { get; private set; }
     public Email Email { get; private set; }
-    public string Description { get; private set; }
-    public int ExperienceYears { get; private set; }
+    public Description Description { get; private set; }
+    public ExperienceYears ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
 
     public IReadOnlyList<Pet> Pets => _pets;
@@ -49,18 +48,11 @@ public class Volunteer : BaseEntity<VolunteerId>
         VolunteerId id,
         FullName fullName,
         Email email,
-        string description,
-        int experienceYears,
+        Description description,
+        ExperienceYears experienceYears,
         PhoneNumber phoneNumber
         )
     {
-
-        if (string.IsNullOrWhiteSpace(description) || description.Length > MAX_DESCRIPTION_LENGTH)
-            return Errors.General.ValueIsInvalid("Description");
-
-        if (experienceYears is < MIN_EXPERIENCE_YEARS or > MAX_EXPERIENCE_YEARS)
-            return Errors.General.ValueIsInvalid("ExperienceYears");
-
         return new Volunteer(
             id,
             fullName,

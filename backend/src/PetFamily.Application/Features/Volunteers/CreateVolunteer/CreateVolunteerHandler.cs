@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Entities;
-using PetFamily.Domain.Ids;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers;
+using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Application.Features.Volunteers.CreateVolunteer;
 public class CreateVolunteerHandler
@@ -13,31 +14,18 @@ public class CreateVolunteerHandler
         _volunteersRepository = volunteersRepository;
     }
 
-    public async Task<Result<Guid, Error>> HandleAsync(CreateVolunteerRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid, Error>> HandleAsync(
+        CreateVolunteerRequest request,
+        CancellationToken cancellationToken = default
+        )
     {
-        var fullName = FullName.Create(
-            request.FirstName, 
-            request.MiddleName, 
-            request.Surname);
+        var fullName = FullName.Create(request.FirstName, request.MiddleName, request.Surname).Value;
+        var email = Email.Create(request.Email).Value;
+        var description = Description.Create(request.Description).Value;
+        var experience = ExperienceYears.Create(request.Experience).Value;
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
 
-        if (fullName.IsFailure)
-            return fullName.Error;
-
-        var email = Email.Create(request.Email);
-        if (email.IsFailure)
-            return email.Error;
-
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
-        if (phoneNumber.IsFailure)
-            return phoneNumber.Error;
-
-        var volunteer = Volunteer.Create(
-            VolunteerId.NewVolunteerId(), 
-            fullName.Value, 
-            email.Value, 
-            request.Description, 
-            request.Experience, 
-            phoneNumber.Value);
+        var volunteer = Volunteer.Create(VolunteerId.NewVolunteerId(), fullName, email, description, experience, phoneNumber);
 
         if (volunteer.IsFailure)
             return volunteer.Error;

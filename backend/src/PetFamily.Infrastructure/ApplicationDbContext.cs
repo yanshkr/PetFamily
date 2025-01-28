@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PetFamily.Domain.Entities;
+using PetFamily.Domain.Volunteers;
 
 namespace PetFamily.Infrastructure;
 public class ApplicationDbContext(IConfiguration configuration) : DbContext

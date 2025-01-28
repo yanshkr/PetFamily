@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities;
 using PetFamily.Domain.Enums;
-using PetFamily.Domain.Ids;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Entities;
+using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Infrastructure.Configurations.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -22,15 +23,25 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired(true)
             .HasColumnName("id");
 
-        builder.Property(p => p.Name)
-            .IsRequired(true)
-            .HasMaxLength(Pet.MAX_NAME_LENGTH)
-            .HasColumnName("name");
+        builder.ComplexProperty(
+            p => p.Name,
+            nb =>
+            {
+                nb.Property(n => n.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Name.MAX_NAME_LENGTH)
+                    .HasColumnName("name");
+            });
 
-        builder.Property(p => p.Description)
-            .IsRequired(true)
-            .HasMaxLength(Pet.MAX_DESCRIPTION_LENGTH)
-            .HasColumnName("description");
+        builder.ComplexProperty(
+            p => p.Description,
+            db =>
+            {
+                db.Property(d => d.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Description.MAX_DESCRIPTION_LENGTH)
+                    .HasColumnName("description");
+            });
 
         builder.Property(p => p.Type)
             .IsRequired(true)
@@ -51,15 +62,25 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired(true)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Property(p => p.Color)
-            .IsRequired(true)
-            .HasMaxLength(Pet.MAX_COLOR_LENGTH)
-            .HasColumnName("color");
+        builder.ComplexProperty(
+            p => p.Color,
+            cb =>
+            {
+                cb.Property(c => c.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Color.MAX_COLOR_LENGTH)
+                    .HasColumnName("color");
+            });
 
-        builder.Property(p => p.HealthInfo)
-            .IsRequired(true)
-            .HasMaxLength(Pet.MAX_HEALTH_INFO_LENGTH)
-            .HasColumnName("health_info");
+        builder.ComplexProperty(
+            p => p.HealthInfo,
+            hb =>
+            {
+                hb.Property(h => h.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(HealthInfo.MAX_HEALTHINFO_LENGTH)
+                    .HasColumnName("health_info");
+            });
 
         builder.ComplexProperty(
             p => p.Address,

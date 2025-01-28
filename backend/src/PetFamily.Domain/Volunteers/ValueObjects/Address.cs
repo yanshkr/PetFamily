@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Shared.ValueObjects;
 public record Address
 {
     public const int MAX_VALUE_LENGTH = 200;

@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Entities;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Volunteers;
 
 namespace PetFamily.Application.Features.Volunteers;
 public interface IVolunteersRepository
