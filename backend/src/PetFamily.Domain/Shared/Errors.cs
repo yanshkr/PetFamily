@@ -9,5 +9,6 @@ public static class Errors
 
         public static Error NotFound(Guid id) => Error.NotFound("record.not.found", $"Record not found for id '{id}'");
         public static Error ValueIsRequired(string name) => Error.Validation("value.is.required", $"'{name}' is required");
+        public static Error UnExpected(string message) => Error.UnExpected("unexpected.error", message);
     }
 }
