@@ -1,13 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
 public record SocialMedia
 {
-    private const string URL_REGEX = @"^https:\/\/([\w\-]+\.)+[\w\-]+(\/[\w\-._~:\/?#[\]@!$&'()*+,;=%]*)?$";
+    private const string URL_REGEX = @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";
     public const int MAX_NAME_LENGTH = 100;
 
+    [JsonConstructor]
     private SocialMedia(
         string name,
         string url

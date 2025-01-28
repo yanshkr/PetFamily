@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects;
@@ -8,6 +9,7 @@ public record PaymentInfo
     private const string CREDIT_CARD_REGEX = @"^(\d{4}[- ]?){3}\d{4}$";
     public const int MAX_NAME_LENGTH = 100;
 
+    [JsonConstructor]
     private PaymentInfo(
         string name,
         string address
