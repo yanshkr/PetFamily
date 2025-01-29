@@ -97,6 +97,15 @@ internal class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .IsRequired(true)
             .HasColumnName("social_medias");
 
+        builder.Property(v => v.IsDeleted)
+            .IsRequired(true)
+            .HasColumnName("is_deleted");
+
+        builder.Property(v => v.DeletedAt)
+            .SetDefaultDateTimeKind()
+            .IsRequired(true)
+            .HasColumnName("deleted_at");
+
         builder.Property(v => v.UpdatedAt)
             .SetDefaultDateTimeKind()
             .IsRequired(true)

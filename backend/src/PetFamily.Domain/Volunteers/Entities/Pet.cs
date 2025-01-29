@@ -8,7 +8,7 @@ using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Domain.Volunteers.Entities;
-public class Pet : BaseEntity<PetId>
+public class Pet : SoftDeletableEntity<PetId>
 {
     private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<Vaccine> _vaccines = [];

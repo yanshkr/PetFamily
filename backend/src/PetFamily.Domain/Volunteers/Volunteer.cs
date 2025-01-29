@@ -7,7 +7,7 @@ using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Domain.Volunteers;
-public class Volunteer : BaseEntity<VolunteerId>
+public class Volunteer : SoftDeletableEntity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
     private List<PaymentInfo> _paymentInfos = [];
@@ -88,5 +88,23 @@ public class Volunteer : BaseEntity<VolunteerId>
     public void UpdatePaymentInfo(IEnumerable<PaymentInfo> paymentInfos)
     {
         _paymentInfos = paymentInfos.ToList();
+    }
+    public new void Delete()
+    {
+        base.Delete();
+
+        foreach (var pet in _pets)
+        {
+            pet.Delete();
+        }
+    }
+    public new void Restore()
+    {
+        base.Restore();
+
+        foreach (var pet in _pets)
+        {
+            pet.Restore();
+        }
     }
 }

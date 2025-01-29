@@ -9,10 +9,10 @@ namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 public class UpdateVolunteerPaymentInfoHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
-    private readonly ILogger<CreateVolunteerHandler> _logger;
+    private readonly ILogger<UpdateVolunteerPaymentInfoHandler> _logger;
     public UpdateVolunteerPaymentInfoHandler(
         IVolunteersRepository volunteersRepository,
-        ILogger<CreateVolunteerHandler> logger)
+        ILogger<UpdateVolunteerPaymentInfoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _logger = logger;
