@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Api.Extensions;
 using PetFamily.Application.Features.Volunteers.CreateVolunteer;
+using PetFamily.Application.Features.Volunteers.DeleteVolunteer;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteer;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
@@ -56,6 +57,18 @@ public class VolunteersController : ControllerBase
     {
         var request = new UpdateVolunteerPaymentInfoRequest(VolunteerId.FromGuid(id), dto);
         var result = await updateVolunteerPaymentInfoHandler.HandleAsync(request, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(
+        [FromRoute] Guid id,
+        [FromQuery] bool IsSoftDelete,
+        [FromServices] DeleteVolunteerHandler deleteVolunteerHandler,
+        CancellationToken cancellationToken)
+    {
+        var request = new DeleteVolunteerRequest(VolunteerId.FromGuid(id), IsSoftDelete);
+        var result = await deleteVolunteerHandler.HandleAsync(request, cancellationToken);
 
         return result.ToResponse();
     }
