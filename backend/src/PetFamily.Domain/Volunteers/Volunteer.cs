@@ -10,8 +10,8 @@ namespace PetFamily.Domain.Volunteers;
 public class Volunteer : BaseEntity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
-    private readonly List<PaymentInfo> _paymentInfos = [];
-    private readonly List<SocialMedia> _socialMedias = [];
+    private List<PaymentInfo> _paymentInfos = [];
+    private List<SocialMedia> _socialMedias = [];
 
 #pragma warning disable CS8618
     private Volunteer() { }
@@ -66,4 +66,27 @@ public class Volunteer : BaseEntity<VolunteerId>
     public int GetHelpPetsCount() => _pets.Count(p => p.Status == PetStatus.NeedHelp);
     public int GetShelterLookingCount() => _pets.Count(p => p.Status == PetStatus.ShelterLooking);
     public int GetShelterFoundCount() => _pets.Count(p => p.Status == PetStatus.ShelterFound);
+
+    public void UpdateMainInfo(
+        FullName fullName,
+        Email email,
+        Description description,
+        ExperienceYears experienceYears,
+        PhoneNumber phoneNumber
+        )
+    {
+        FullName = fullName;
+        Email = email;
+        Description = description;
+        ExperienceYears = experienceYears;
+        PhoneNumber = phoneNumber;
+    }
+    public void UpdateSocialMedia(IEnumerable<SocialMedia> socialMedias)
+    {
+        _socialMedias = socialMedias.ToList();
+    }
+    public void UpdatePaymentInfo(IEnumerable<PaymentInfo> paymentInfos)
+    {
+        _paymentInfos = paymentInfos.ToList();
+    }
 }

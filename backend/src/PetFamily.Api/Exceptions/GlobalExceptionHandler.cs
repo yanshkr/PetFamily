@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using PetFamily.Api.Response;
 using PetFamily.Domain.Shared;
-using Serilog;
 
 namespace PetFamily.Api.Exceptions;
 
@@ -14,8 +13,8 @@ public class GlobalExceptionHandler : IExceptionHandler
     }
 
     public async ValueTask<bool> TryHandleAsync(
-        HttpContext httpContext, 
-        Exception exception, 
+        HttpContext httpContext,
+        Exception exception,
         CancellationToken cancellationToken
         )
     {
