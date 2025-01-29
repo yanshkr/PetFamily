@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Features.Volunteers.CreateVolunteer;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 
@@ -8,10 +7,10 @@ namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
 public class UpdateVolunteerSocialMediaHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
-    private readonly ILogger<CreateVolunteerHandler> _logger;
+    private readonly ILogger<UpdateVolunteerSocialMediaHandler> _logger;
     public UpdateVolunteerSocialMediaHandler(
         IVolunteersRepository volunteersRepository,
-        ILogger<CreateVolunteerHandler> logger)
+        ILogger<UpdateVolunteerSocialMediaHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _logger = logger;
