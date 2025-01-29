@@ -4,13 +4,13 @@ public abstract class SoftDeletableEntity<T> : BaseEntity<T> where T : IComparab
     public bool IsDeleted { get; private set; }
     public DateTime DeletedAt { get; private set; }
 
-    public virtual void Delete()
+    public void Delete()
     {
         IsDeleted = true;
         DeletedAt = DateTime.UtcNow;
     }
 
-    public virtual void Restore()
+    public void Restore()
     {
         IsDeleted = false;
         DeletedAt = DateTime.MinValue;

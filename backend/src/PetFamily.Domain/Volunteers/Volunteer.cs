@@ -89,7 +89,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     {
         _paymentInfos = paymentInfos.ToList();
     }
-    public override void Delete()
+    public new void Delete()
     {
         base.Delete();
 
@@ -98,7 +98,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
             pet.Delete();
         }
     }
-    public override void Restore()
+    public new void Restore()
     {
         base.Restore();
 
