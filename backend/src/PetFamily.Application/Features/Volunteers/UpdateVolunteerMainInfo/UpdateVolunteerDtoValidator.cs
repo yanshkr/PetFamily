@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo.Contracts;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers.ValueObjects;
