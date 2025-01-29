@@ -89,4 +89,22 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     {
         _paymentInfos = paymentInfos.ToList();
     }
+    public override void Delete()
+    {
+        base.Delete();
+
+        foreach (var pet in _pets)
+        {
+            pet.Delete();
+        }
+    }
+    public override void Restore()
+    {
+        base.Restore();
+
+        foreach (var pet in _pets)
+        {
+            pet.Restore();
+        }
+    }
 }
