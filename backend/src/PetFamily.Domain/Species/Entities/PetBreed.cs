@@ -29,7 +29,7 @@ public class PetBreed : BaseEntity<PetBreedId>
         string name
         )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length <= MAX_NAME_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
             return Errors.General.ValueIsInvalid("Name");
 
         return new PetBreed(id, name);

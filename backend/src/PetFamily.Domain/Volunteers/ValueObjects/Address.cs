@@ -49,7 +49,7 @@ public record Address
         if (string.IsNullOrWhiteSpace(street) || street.Length > MAX_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Street");
 
-        if (zipCode is >= MIN_ZIP_CODE_VALUE and <= MAX_ZIP_CODE_VALUE)
+        if (zipCode is < MIN_ZIP_CODE_VALUE or > MAX_ZIP_CODE_VALUE)
             return Errors.General.ValueIsInvalid("ZipCode", MIN_ZIP_CODE_VALUE, MAX_ZIP_CODE_VALUE);
 
         return new Address(country, state, city, street, zipCode);

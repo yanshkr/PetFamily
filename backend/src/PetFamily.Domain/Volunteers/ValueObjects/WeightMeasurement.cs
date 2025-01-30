@@ -18,7 +18,7 @@ public record WeightMeasurement
 
     public static Result<WeightMeasurement, Error> CreateFromGrams(uint grams)
     {
-        if (grams is >= MIN_VALUE and <= MAX_VALUE)
+        if (grams is < MIN_VALUE or > MAX_VALUE)
             return Errors.General.ValueIsInvalid("Weight", MIN_VALUE, MAX_VALUE);
 
         return new WeightMeasurement(grams);
