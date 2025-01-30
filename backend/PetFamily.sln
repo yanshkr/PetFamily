@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Api", "src\PetFamily.Api\PetFamily.Api.csproj", "{67E3C991-9810-4163-934D-EEB71E7F9CB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Api", "src\PetFamily.Api\PetFamily.Api.csproj", "{67E3C991-9810-4163-934D-EEB71E7F9CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Infrastructure", "src\PetFamily.Infrastructure\PetFamily.Infrastructure.csproj", "{101BEAB1-7B0F-472C-B913-FCDC704C6DAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Infrastructure", "src\PetFamily.Infrastructure\PetFamily.Infrastructure.csproj", "{101BEAB1-7B0F-472C-B913-FCDC704C6DAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Domain", "src\PetFamily.Domain\PetFamily.Domain.csproj", "{0525E702-0897-49B9-874B-55DFF4CA58EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Domain", "src\PetFamily.Domain\PetFamily.Domain.csproj", "{0525E702-0897-49B9-874B-55DFF4CA58EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Application", "src\PetFamily.Application\PetFamily.Application.csproj", "{A1A0E7ED-0CB9-4918-8F31-8EB5F5850CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Application", "src\PetFamily.Application\PetFamily.Application.csproj", "{A1A0E7ED-0CB9-4918-8F31-8EB5F5850CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Domain.UnitTests", "tests\PetFamily.Domain.UnitTests\PetFamily.Domain.UnitTests.csproj", "{342BEE05-61DE-4F6C-8AB0-F0BF638E6946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{A1A0E7ED-0CB9-4918-8F31-8EB5F5850CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A0E7ED-0CB9-4918-8F31-8EB5F5850CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A0E7ED-0CB9-4918-8F31-8EB5F5850CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342BEE05-61DE-4F6C-8AB0-F0BF638E6946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342BEE05-61DE-4F6C-8AB0-F0BF638E6946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342BEE05-61DE-4F6C-8AB0-F0BF638E6946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342BEE05-61DE-4F6C-8AB0-F0BF638E6946}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63AE9B99-C4F7-4D0C-896B-CEB46D6202E9}
 	EndGlobalSection
 EndGlobal
