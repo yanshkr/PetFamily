@@ -70,7 +70,7 @@ public class Pet : SoftDeletableEntity<PetId>
     public bool IsSterilized { get; private set; }
     public bool IsVaccinated => _vaccines.Count != 0;
 
-    public PetPosition PetPosition { get; private set; }
+    public PetPosition PetPosition { get; private set; } = null!;
 
     public IReadOnlyList<Vaccine> Vaccines => _vaccines;
     public IReadOnlyList<PaymentInfo> PaymentInfos => _paymentInfos;
