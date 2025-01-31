@@ -20,7 +20,7 @@ public record HeightMeasurement
         uint centimeters
         )
     {
-        if (centimeters is > MIN_VALUE and < MAX_VALUE)
+        if (centimeters is < MIN_VALUE or > MAX_VALUE)
             return Errors.General.ValueIsInvalid("Centimeters", MIN_VALUE, MAX_VALUE);
 
         return new HeightMeasurement(centimeters);

@@ -6,6 +6,7 @@ using PetFamily.Domain.Species;
 using PetFamily.Domain.Species.Entities;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Domain.Volunteers.Entities;
 public class Pet : SoftDeletableEntity<PetId>
@@ -69,6 +70,8 @@ public class Pet : SoftDeletableEntity<PetId>
     public bool IsSterilized { get; private set; }
     public bool IsVaccinated => _vaccines.Count != 0;
 
+    public PetPosition PetPosition { get; private set; } = null!;
+
     public IReadOnlyList<Vaccine> Vaccines => _vaccines;
     public IReadOnlyList<PaymentInfo> PaymentInfos => _paymentInfos;
 
@@ -118,5 +121,10 @@ public class Pet : SoftDeletableEntity<PetId>
             isSterilized,
             status
             );
+    }
+
+    public void SetPetPosition(PetPosition serialNumber)
+    {
+        PetPosition = serialNumber;
     }
 }

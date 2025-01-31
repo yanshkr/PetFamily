@@ -147,6 +147,15 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired(true)
             .HasColumnName("sterilized");
 
+        builder.ComplexProperty(
+            p => p.PetPosition,
+            sb =>
+            {
+                sb.Property(s => s.Value)
+                    .IsRequired(true)
+                    .HasColumnName("serial_number");
+            });
+
         builder.Property(p => p.Status)
             .IsRequired(true)
             .HasDefaultValue(PetStatus.Undefined)
