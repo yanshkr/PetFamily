@@ -50,8 +50,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         Email email,
         Description description,
         ExperienceYears experienceYears,
-        PhoneNumber phoneNumber
-        )
+        PhoneNumber phoneNumber)
     {
         return new Volunteer(
             id,
@@ -72,8 +71,7 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
         Email email,
         Description description,
         ExperienceYears experienceYears,
-        PhoneNumber phoneNumber
-        )
+        PhoneNumber phoneNumber)
     {
         FullName = fullName;
         Email = email;

@@ -16,8 +16,7 @@ public class FilesController : Controller
     public async Task<IActionResult> Upload(
         IFormFile formFile,
         [FromServices] UploadFileHandler uploadFileHandler,
-        CancellationToken cancellationToken
-        )
+        CancellationToken cancellationToken)
     {
         var command = new UploadFileCommand(formFile.OpenReadStream(), formFile.FileName);
 
@@ -29,8 +28,7 @@ public class FilesController : Controller
     public async Task<IActionResult> GetFileUri(
         [FromQuery] string fileName,
         [FromServices] GetFileUriHandler getFileUriHandler,
-        CancellationToken cancellationToken
-        )
+        CancellationToken cancellationToken)
     {
         var command = new GetFileUriCommand(fileName);
 
@@ -42,8 +40,7 @@ public class FilesController : Controller
     public async Task<IActionResult> DeleteFile(
         [FromQuery] string fileName,
         [FromServices] DeleteFileHandler deleteFileHandler,
-        CancellationToken cancellationToken
-        )
+        CancellationToken cancellationToken)
     {
         var command = new DeleteFileCommand(fileName);
 

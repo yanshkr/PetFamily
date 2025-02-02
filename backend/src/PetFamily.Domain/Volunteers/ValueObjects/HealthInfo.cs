@@ -13,9 +13,7 @@ public record HealthInfo
 
     public string Value { get; }
 
-    public static Result<HealthInfo, Error> Create(
-        string healthInfo
-        )
+    public static Result<HealthInfo, Error> Create(string healthInfo)
     {
         if (string.IsNullOrWhiteSpace(healthInfo) || healthInfo.Length > MAX_HEALTHINFO_LENGTH)
             return Errors.General.ValueIsInvalid("HealthInfo");

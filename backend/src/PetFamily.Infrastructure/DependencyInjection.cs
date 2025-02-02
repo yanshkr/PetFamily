@@ -13,8 +13,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration
-        )
+        IConfiguration configuration)
     {
         return services
             .InjectDatabase()
@@ -29,8 +28,7 @@ public static class DependencyInjection
     }
     public static IServiceCollection InjectMinio(
         this IServiceCollection services,
-        IConfiguration configuration
-        )
+        IConfiguration configuration)
     {
         services.Configure<MinioOptions>(configuration.GetSection(MinioConstants.OPTIONS_NAME));
         services.AddMinio(configure =>

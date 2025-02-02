@@ -18,8 +18,7 @@ public class UploadFileHandler
 
     public UploadFileHandler(
         IFilesProvider filesProvider,
-        ILogger<UploadFileHandler> logger
-        )
+        ILogger<UploadFileHandler> logger)
     {
         _filesProvider = filesProvider;
         _logger = logger;
@@ -27,8 +26,7 @@ public class UploadFileHandler
 
     public async Task<Result<string, Error>> Handle(
         UploadFileCommand command,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Uploading file {FileName}", command.FileName);
 

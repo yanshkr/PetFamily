@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Features.Volunteers.DeleteVolunteer.Contracts;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Features.Volunteers.DeleteVolunteer;
@@ -17,8 +18,7 @@ public class DeleteVolunteerHandler
 
     public async Task<Result<Guid, Error>> HandleAsync(
         DeleteVolunteerRequest request,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("DeleteVolunteerRequest: {@request}", request);
 

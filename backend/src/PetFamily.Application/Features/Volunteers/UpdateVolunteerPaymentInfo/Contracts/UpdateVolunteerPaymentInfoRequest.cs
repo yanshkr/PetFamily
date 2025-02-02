@@ -3,5 +3,4 @@
 namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo.Contracts;
 public record UpdateVolunteerPaymentInfoRequest(
     VolunteerId Id,
-    UpdateVolunteerPaymentInfoDto Dto
-    );
+    UpdateVolunteerPaymentInfoDto Dto);

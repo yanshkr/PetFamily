@@ -18,8 +18,7 @@ public class GetFileUriHandler
 
     public GetFileUriHandler(
         IFilesProvider filesProvider,
-        ILogger<GetFileUriHandler> logger
-        )
+        ILogger<GetFileUriHandler> logger)
     {
         _filesProvider = filesProvider;
         _logger = logger;
@@ -27,8 +26,7 @@ public class GetFileUriHandler
 
     public async Task<Result<string, Error>> Handle(
         GetFileUriCommand command,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting file {FileName} uri", command.FileName);
 

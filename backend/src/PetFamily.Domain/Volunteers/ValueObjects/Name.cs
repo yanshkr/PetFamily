@@ -13,9 +13,7 @@ public record Name
 
     public string Value { get; }
 
-    public static Result<Name, Error> Create(
-        string name
-        )
+    public static Result<Name, Error> Create(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
             return Errors.General.ValueIsInvalid("Name");

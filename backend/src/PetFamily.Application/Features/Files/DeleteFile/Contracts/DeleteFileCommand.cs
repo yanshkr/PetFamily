@@ -5,6 +5,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PetFamily.Application.Features.Files.DeleteFile.Contracts;
-public record DeleteFileCommand(
-    string FileName
-    );
+public record DeleteFileCommand(string FileName);

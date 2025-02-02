@@ -18,8 +18,7 @@ public class MinioProvider : IFilesProvider
     }
     public async Task<Result<string, Error>> UploadFileAsync(
         FileData fileData,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var ensureMakeBucketResult = await EnsureMakeBucketAsync(MinioConstants.BUCKET_NAME, cancellationToken);
 
@@ -45,8 +44,7 @@ public class MinioProvider : IFilesProvider
     }
     public async Task<Result<string, Error>> DeleteFileAsync(
         FileDataInfo fileInfo, 
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var objectExistsResult = await IsFileExists(MinioConstants.BUCKET_NAME, fileInfo.ObjectName, cancellationToken);
 
@@ -74,8 +72,7 @@ public class MinioProvider : IFilesProvider
 
     public async Task<Result<string, Error>> GetPredesignedFileLinkAsync(
         FileDataInfo fileInfo, 
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var presignedGetObjectArgs = new PresignedGetObjectArgs()
             .WithBucket(MinioConstants.BUCKET_NAME)
@@ -96,8 +93,7 @@ public class MinioProvider : IFilesProvider
     private async Task<Result<bool, Error>> IsFileExists(
         string bucketName,
         string objectName,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var bucketExistsResult = await IsBucketExists(bucketName, cancellationToken);
 
@@ -124,8 +120,7 @@ public class MinioProvider : IFilesProvider
     }
     private async Task<Result<bool, Error>> IsBucketExists(
         string bucketName,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var bucketExistsArgs = new BucketExistsArgs()
             .WithBucket(bucketName);

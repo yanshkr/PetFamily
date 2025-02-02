@@ -2,5 +2,4 @@
 
 public record SocialMediaRaw(
     string Url,
-    string Type
-    );
+    string Type);

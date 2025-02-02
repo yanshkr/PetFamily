@@ -22,10 +22,7 @@ public record SocialMedia
     public string Name { get; }
     public string Url { get; }
 
-    public static Result<SocialMedia, Error> Create(
-        string name,
-        string url
-        )
+    public static Result<SocialMedia, Error> Create(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
             return Errors.General.ValueIsInvalid("Name");

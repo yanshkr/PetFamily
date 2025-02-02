@@ -18,8 +18,7 @@ public class DeleteFileHandler
 
     public DeleteFileHandler(
         IFilesProvider filesProvider,
-        ILogger<DeleteFileHandler> logger
-        )
+        ILogger<DeleteFileHandler> logger)
     {
         _filesProvider = filesProvider;
         _logger = logger;
@@ -27,8 +26,7 @@ public class DeleteFileHandler
 
     public async Task<Result<string, Error>> Handle(
         DeleteFileCommand command,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Deleting file {FileName}", command.FileName);
 

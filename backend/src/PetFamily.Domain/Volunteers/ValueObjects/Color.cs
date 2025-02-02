@@ -13,9 +13,7 @@ public record Color
 
     public string Value { get; }
 
-    public static Result<Color, Error> Create(
-        string color
-        )
+    public static Result<Color, Error> Create(string color)
     {
         if (string.IsNullOrWhiteSpace(color) || color.Length > MAX_COLOR_LENGTH)
             return Errors.General.ValueIsInvalid("Color");

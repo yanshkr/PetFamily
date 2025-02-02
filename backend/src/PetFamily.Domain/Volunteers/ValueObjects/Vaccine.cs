@@ -22,11 +22,7 @@ public class Vaccine
     public string Description { get; }
     public DateTime Date { get; }
 
-    public static Result<Vaccine, Error> Create(
-        string name,
-        string description,
-        DateTime date
-        )
+    public static Result<Vaccine, Error> Create(string name, string description, DateTime date)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
             return Errors.General.ValueIsInvalid("Name");

@@ -35,8 +35,7 @@ public class Pet : SoftDeletableEntity<PetId>
         HeightMeasurement height,
         DateTime birthDate,
         bool isSterilized,
-        PetStatus status
-        ) : base()
+        PetStatus status) : base()
     {
         Id = id;
         Name = name;
@@ -92,8 +91,7 @@ public class Pet : SoftDeletableEntity<PetId>
         HeightMeasurement height,
         DateTime birthDate,
         bool isSterilized,
-        PetStatus status
-        )
+        PetStatus status)
     {
         if (type == PetType.Undefined)
             return Errors.General.ValueIsInvalid("Type");

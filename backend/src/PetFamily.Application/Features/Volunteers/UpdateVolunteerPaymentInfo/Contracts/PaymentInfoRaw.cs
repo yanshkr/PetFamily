@@ -2,5 +2,4 @@
 
 public record PaymentInfoRaw(
     string Name,
-    string Address
-    );
+    string Address);

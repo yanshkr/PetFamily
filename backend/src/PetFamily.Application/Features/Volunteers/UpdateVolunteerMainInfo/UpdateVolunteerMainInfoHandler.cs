@@ -20,8 +20,7 @@ public class UpdateVolunteerMainInfoHandler
 
     public async Task<Result<Guid, Error>> HandleAsync(
         UpdateVolunteerRequest request,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("UpdateVolunteerRequest: {@request}", request);
 
