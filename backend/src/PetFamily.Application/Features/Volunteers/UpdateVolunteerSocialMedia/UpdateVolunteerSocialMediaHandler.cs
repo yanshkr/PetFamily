@@ -19,8 +19,7 @@ public class UpdateVolunteerSocialMediaHandler
 
     public async Task<Result<Guid, Error>> HandleAsync(
         UpdateVolunteerSocialMediaRequest request,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("UpdateVolunteerSocialMediaRequest: {@request}", request);
 

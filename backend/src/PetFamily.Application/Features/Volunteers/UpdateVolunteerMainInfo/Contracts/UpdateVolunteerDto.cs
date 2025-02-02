@@ -7,5 +7,4 @@ public record UpdateVolunteerDto(
     string Email,
     string Description,
     int Experience,
-    string PhoneNumber
-    );
+    string PhoneNumber);

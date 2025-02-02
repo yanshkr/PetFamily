@@ -9,8 +9,7 @@ public record FullName
     private FullName(
         string firstName,
         string middleName,
-        string lastName
-        )
+        string lastName)
     {
         FirstName = firstName;
         MiddleName = middleName;
@@ -24,8 +23,7 @@ public record FullName
     public static Result<FullName, Error> Create(
         string firstName,
         string middleName,
-        string lastName
-        )
+        string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > MAX_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("FirstName");

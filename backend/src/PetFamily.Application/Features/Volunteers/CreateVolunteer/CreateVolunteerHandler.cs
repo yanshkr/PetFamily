@@ -22,8 +22,7 @@ public class CreateVolunteerHandler
 
     public async Task<Result<Guid, Error>> HandleAsync(
         CreateVolunteerRequest request,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("CreateVolunteerRequest: {@request}", request);
 

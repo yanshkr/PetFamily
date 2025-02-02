@@ -10,8 +10,7 @@ public class CustomValidationFactory : IFluentValidationAutoValidationResultFact
 {
     public IActionResult CreateActionResult(
         ActionExecutingContext context,
-        ValidationProblemDetails? validationProblemDetails
-        )
+        ValidationProblemDetails? validationProblemDetails)
     {
         if (validationProblemDetails is null)
             throw new InvalidOperationException("ValidationProblemDetails is null");

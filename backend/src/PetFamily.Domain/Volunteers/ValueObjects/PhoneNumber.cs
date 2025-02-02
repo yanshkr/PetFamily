@@ -17,9 +17,7 @@ public record PhoneNumber
 
     public string Value { get; }
 
-    public static Result<PhoneNumber, Error> Create(
-        string number
-        )
+    public static Result<PhoneNumber, Error> Create(string number)
     {
         if (!Regex.IsMatch(number, PHONE_NUMBER_REGEX) || number.Length > MAX_PHONE_NUMBER_LENGTH)
             return Errors.General.ValueIsInvalid("PhoneNumber");

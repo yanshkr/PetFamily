@@ -13,10 +13,7 @@ public class PetBreed : BaseEntity<PetBreedId>
     private PetBreed() { }
 #pragma warning restore CS8618
 
-    private PetBreed(
-        PetBreedId id,
-        string name
-        )
+    private PetBreed(PetBreedId id, string name)
     {
         Id = id;
         Name = name;
@@ -24,10 +21,7 @@ public class PetBreed : BaseEntity<PetBreedId>
 
     public string Name { get; private set; }
 
-    public static Result<PetBreed, Error> Create(
-        PetBreedId id,
-        string name
-        )
+    public static Result<PetBreed, Error> Create(PetBreedId id, string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
             return Errors.General.ValueIsInvalid("Name");

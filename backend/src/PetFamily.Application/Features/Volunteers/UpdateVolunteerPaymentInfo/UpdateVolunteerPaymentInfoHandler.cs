@@ -19,8 +19,7 @@ public class UpdateVolunteerPaymentInfoHandler
 
     public async Task<Result<Guid, Error>> HandleAsync(
         UpdateVolunteerPaymentInfoRequest request,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         _logger.LogDebug("UpdateVolunteerPaymentInfoRequest: {@request}", request);
 

@@ -23,7 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSerilog();
 builder.Services.AddSwaggerGen();
 builder.Services
-      .AddInfrastructure()
+      .AddInfrastructure(builder.Configuration)
       .AddApplication()
       .AddApi();
 

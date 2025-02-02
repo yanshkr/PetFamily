@@ -13,8 +13,7 @@ public record Address
         string state,
         string city,
         string street,
-        uint zipCode
-        )
+        uint zipCode)
     {
         Country = country;
         State = state;
@@ -34,8 +33,7 @@ public record Address
         string state,
         string city,
         string street,
-        uint zipCode
-        )
+        uint zipCode)
     {
         if (string.IsNullOrWhiteSpace(country) || country.Length > MAX_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Country");
