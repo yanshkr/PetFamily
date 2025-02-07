@@ -1,15 +1,14 @@
 ﻿using FluentValidation;
-using PetFamily.Application.Dtos.Validators;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
-namespace PetFamily.Application.Features.Volunteers.CreateVolunteer;
-public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteerCommand>
+namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
+public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteerCommand>
 {
-    public CreateVolunteerRequestValidator()
+    public UpdateVolunteerCommandValidator()
     {
-        RuleFor(x => x.FullName)
-            .SetValidator(new FullNameDtoValidator());
+        RuleFor(x => new { x.FirstName, x.MiddleName, x.Surname })
+            .MustBeValueObject(f => FullName.Create(f.FirstName, f.MiddleName, f.Surname));
 
         RuleFor(x => x.Email)
             .MustBeValueObject(Email.Create);

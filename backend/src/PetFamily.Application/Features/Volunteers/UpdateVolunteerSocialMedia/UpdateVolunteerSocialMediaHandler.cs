@@ -1,40 +1,49 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia.Contracts;
+using PetFamily.Application.Database;
+using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
 public class UpdateVolunteerSocialMediaHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateVolunteerSocialMediaCommand> _validator;
     private readonly ILogger<UpdateVolunteerSocialMediaHandler> _logger;
     public UpdateVolunteerSocialMediaHandler(
         IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerSocialMediaCommand> validator,
         ILogger<UpdateVolunteerSocialMediaHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> HandleAsync(
-        UpdateVolunteerSocialMediaRequest request,
+    public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
+        UpdateVolunteerSocialMediaCommand command,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogDebug("UpdateVolunteerSocialMediaRequest: {@request}", request);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(request.Id, cancellationToken);
+        var volunteer = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
         if (volunteer.IsFailure)
-            return volunteer.Error;
+            return volunteer.Error.ToErrorList();
 
-        var socialMedias = request.Dto.SocialMedias.Select(x => SocialMedia.Create(x.Type, x.Url).Value);
+        var socialMedias = command.SocialMedias.Select(x => SocialMedia.Create(x.Type, x.Url).Value);
 
         volunteer.Value.UpdateSocialMedia(socialMedias);
 
-        await _volunteersRepository.SaveAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogDebug("Volunteer social media updated: {@id}", volunteer.Value.Id.Value);
-
-        return volunteer.Value.Id.Value;
+        return volunteer.Value.Id;
     }
 }
