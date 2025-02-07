@@ -1,11 +1,10 @@
-using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.Species.Entities;
 using PetFamily.Domain.Species.Ids;
-using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers;
 using PetFamily.Domain.Volunteers.Entities;
+using PetFamily.Domain.Volunteers.Enums;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
@@ -126,8 +125,10 @@ public class VolunteerTests
         var name = Name.Create("Dog").Value;
         var description = Description.Create("Description").Value;
         var type = PetType.Dog;
-        var breed = PetBreed.Create(PetBreedId.NewPetBreedId(), "Breed").Value;
-        var specie = PetSpecie.Create(PetSpecieId.NewPetSpecieId(), "Specie").Value;
+        var breedName = Name.Create("Breed").Value;
+        var breed = PetBreed.Create(PetBreedId.NewPetBreedId(), breedName).Value;
+        var specieName = Name.Create("Specie").Value;
+        var specie = PetSpecie.Create(PetSpecieId.NewPetSpecieId(), specieName).Value;
         var color = Color.Create("Color").Value;
         var healthInfo = HealthInfo.Create("HealthInfo").Value;
         var address = Address.Create("Address", "Address", "Address", "Address", 2222).Value;
