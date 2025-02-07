@@ -1,18 +1,18 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.Species.Entities;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Enums;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Domain.Volunteers.Entities;
 public class Pet : SoftDeletableEntity<PetId>
 {
-    private readonly List<PaymentInfo> _paymentInfos = [];
     private readonly List<Vaccine> _vaccines = [];
+    private readonly List<PaymentInfo> _paymentInfos = [];
+    private readonly List<Photo> _photos = [];
 
     public Volunteer Volunteer { get; private set; } = null!;
 
@@ -73,6 +73,7 @@ public class Pet : SoftDeletableEntity<PetId>
 
     public IReadOnlyList<Vaccine> Vaccines => _vaccines;
     public IReadOnlyList<PaymentInfo> PaymentInfos => _paymentInfos;
+    public IReadOnlyList<Photo> Photos => _photos;
 
     public PetStatus Status { get; private set; }
 
@@ -119,6 +120,18 @@ public class Pet : SoftDeletableEntity<PetId>
             isSterilized,
             status
             );
+    }
+
+    public void AddPhotos(List<Photo> photos)
+    {
+        _photos.AddRange(photos);
+    }
+    public void RemovePhotos(List<Photo> photos)
+    {
+        foreach (var photo in photos)
+        {
+            _photos.Remove(photo);
+        }
     }
 
     public void SetPetPosition(PetPosition serialNumber)

@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Volunteers.Entities;
+using PetFamily.Domain.Volunteers.Enums;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
@@ -10,8 +10,8 @@ namespace PetFamily.Domain.Volunteers;
 public class Volunteer : SoftDeletableEntity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
-    private List<PaymentInfo> _paymentInfos = [];
-    private List<SocialMedia> _socialMedias = [];
+    private readonly List<PaymentInfo> _paymentInfos = [];
+    private readonly List<SocialMedia> _socialMedias = [];
 
 #pragma warning disable CS8618
     private Volunteer() { }
@@ -81,11 +81,13 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     }
     public void UpdateSocialMedia(IEnumerable<SocialMedia> socialMedias)
     {
-        _socialMedias = socialMedias.ToList();
+        _socialMedias.Clear();
+        _socialMedias.AddRange(socialMedias);
     }
     public void UpdatePaymentInfo(IEnumerable<PaymentInfo> paymentInfos)
     {
-        _paymentInfos = paymentInfos.ToList();
+        _paymentInfos.Clear();
+        _paymentInfos.AddRange(paymentInfos);
     }
 
     public Result<Pet, Error> GetPetById(PetId petId)

@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Shared.ValueObjects;
 public record Name
 {
     public const int MAX_NAME_LENGTH = 100;

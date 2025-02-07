@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public class Vaccine
 {
     public const int MAX_NAME_LENGTH = 100;

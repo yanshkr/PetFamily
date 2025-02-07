@@ -2,7 +2,7 @@
 using PetFamily.Domain.Shared;
 using System.Text.RegularExpressions;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record PhoneNumber
 {
     private const string PHONE_NUMBER_REGEX = @"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}";

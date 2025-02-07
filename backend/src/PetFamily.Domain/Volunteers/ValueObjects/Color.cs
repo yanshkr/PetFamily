@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record Color
 {
     public const int MAX_COLOR_LENGTH = 50;
