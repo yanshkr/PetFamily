@@ -1,7 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Minio;
 using Minio.AspNetCore;
+using PetFamily.Application.Database;
+using PetFamily.Application.Features.Species;
 using PetFamily.Application.Features.Volunteers;
 using PetFamily.Application.Providers;
 using PetFamily.Infrastructure.Constants;
@@ -16,13 +21,23 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         return services
-            .InjectDatabase()
+            .InjectDatabase(configuration)
             .InjectMinio(configuration);
     }
-    public static IServiceCollection InjectDatabase(this IServiceCollection services)
+    public static IServiceCollection InjectDatabase(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        services.AddScoped<ApplicationDbContext>();
+        services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("Database"));
+            options.UseSnakeCaseNamingConvention();
+            options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+        });
+
         services.AddScoped<IVolunteersRepository, VolunteerRepository>();
+        services.AddScoped<ISpeciesRepository, SpecieRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

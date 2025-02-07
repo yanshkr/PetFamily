@@ -33,12 +33,6 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -46,6 +40,17 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<Guid>("specie_id")
                         .HasColumnType("uuid")
                         .HasColumnName("specie_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Species.Entities.PetBreed.Name#Name", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("name");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_breeds");
@@ -66,15 +71,20 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Species.PetSpecie.Name#Name", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("name");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_species");
@@ -98,6 +108,14 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasDefaultValue(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc))
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<bool>("IsSterilized")
                         .HasColumnType("boolean")
                         .HasColumnName("sterilized");
@@ -106,6 +124,11 @@ namespace PetFamily.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("payment_infos");
+
+                    b.Property<string>("Photos")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("photos");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -172,8 +195,8 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnType("character varying(200)")
                                 .HasColumnName("street");
 
-                            b1.Property<long>("ZipCode")
-                                .HasColumnType("bigint")
+                            b1.Property<int>("ZipCode")
+                                .HasColumnType("integer")
                                 .HasColumnName("zip_code");
                         });
 
@@ -214,8 +237,8 @@ namespace PetFamily.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<long>("Centimeters")
-                                .HasColumnType("bigint")
+                            b1.Property<int>("Centimeters")
+                                .HasColumnType("integer")
                                 .HasColumnName("height");
                         });
 
@@ -228,6 +251,15 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PetPosition", "PetFamily.Domain.Volunteers.Entities.Pet.PetPosition#PetPosition", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("serial_number");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "PetFamily.Domain.Volunteers.Entities.Pet.PhoneNumber#PhoneNumber", b1 =>
@@ -244,8 +276,8 @@ namespace PetFamily.Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<long>("Grams")
-                                .HasColumnType("bigint")
+                            b1.Property<int>("Grams")
+                                .HasColumnType("integer")
                                 .HasColumnName("weight");
                         });
 

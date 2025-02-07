@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers.Entities;
+using PetFamily.Domain.Volunteers.Enums;
 using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 using PetFamily.Infrastructure.Configurations.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -172,6 +172,11 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             .JsonValueObjectCollectionConversion()
             .IsRequired(true)
             .HasColumnName("payment_infos");
+
+        builder.Property(p => p.Photos)
+            .JsonValueObjectCollectionConversion()
+            .IsRequired(true)
+            .HasColumnName("photos");
 
         builder.Property(p => p.UpdatedAt)
             .SetDefaultDateTimeKind()

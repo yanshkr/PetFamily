@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.Species.Ids;
 
@@ -19,10 +20,15 @@ internal class SpecieConfiguration : IEntityTypeConfiguration<PetSpecie>
             .IsRequired(true)
             .HasColumnName("id");
 
-        builder.Property(s => s.Name)
-            .IsRequired(true)
-            .HasMaxLength(PetSpecie.MAX_NAME_LENGTH)
-            .HasColumnName("name");
+        builder.ComplexProperty(
+            s => s.Name,
+            nb =>
+            {
+                nb.Property(n => n.Value)
+                    .IsRequired(true)
+                    .HasMaxLength(Name.MAX_NAME_LENGTH)
+                    .HasColumnName("name");
+            });
 
         builder.HasMany(s => s.Breeds)
             .WithOne(s => s.Specie)

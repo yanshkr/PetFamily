@@ -2,7 +2,8 @@
 public static class MinioConstants
 {
     public const string OPTIONS_NAME = "Minio";
-    public const string BUCKET_NAME = "petfamily";
 
-    public static readonly TimeSpan DEFAULT_EXPIRY = TimeSpan.FromDays(1);
+    public const int MAX_CONCURRENCY = 10;
+
+    public static readonly int DEFAULT_EXPIRY = 60 * 60 * 24;
 }
