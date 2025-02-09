@@ -7,7 +7,6 @@ using PetFamily.Application.Features.Volunteers.AddPet;
 using PetFamily.Application.Features.Volunteers.CreateVolunteer;
 using PetFamily.Application.Features.Volunteers.DeletePhotosAtPet;
 using PetFamily.Application.Features.Volunteers.DeleteVolunteer;
-using PetFamily.Application.Features.Volunteers.UpdatePetPosition;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
@@ -28,7 +27,6 @@ public static class DependencyInjection
         services.AddScoped<AddPetHandler>();
         services.AddScoped<UploadPetPhotosHandler>();
         services.AddScoped<DeletePetPhotosHandler>();
-        services.AddScoped<UpdatePetPositionHandler>();
 
         services.AddScoped<CreateSpecieHandler>();
         services.AddScoped<AddBreedHandler>();

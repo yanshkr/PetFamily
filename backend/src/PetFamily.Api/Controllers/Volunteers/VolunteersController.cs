@@ -6,7 +6,6 @@ using PetFamily.Application.Features.Volunteers.AddPet;
 using PetFamily.Application.Features.Volunteers.CreateVolunteer;
 using PetFamily.Application.Features.Volunteers.DeletePhotosAtPet;
 using PetFamily.Application.Features.Volunteers.DeleteVolunteer;
-using PetFamily.Application.Features.Volunteers.UpdatePetPosition;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
@@ -116,19 +115,6 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
         var result = await deletePetPhotoHandler.HandleAsync(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-    [HttpPatch("{volunteerId:guid}/pet/{petId:guid}/position")]
-    public async Task<IActionResult> UpdatePetPostion(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromBody] UpdatePetPositionRequest request,
-        [FromServices] UpdatePetPositionHandler updatePetPositionHandler,
-        CancellationToken cancellationToken)
-    {
-        var command = request.ToCommand(volunteerId, petId);
-        var result = await updatePetPositionHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
