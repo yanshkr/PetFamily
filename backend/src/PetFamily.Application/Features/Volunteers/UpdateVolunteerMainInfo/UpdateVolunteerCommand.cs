@@ -1,8 +1,6 @@
-﻿using PetFamily.Domain.Volunteers.Ids;
-
-namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
+﻿namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
 public record UpdateVolunteerCommand(
-    VolunteerId Id,
+    Guid Id,
     string FirstName,
     string MiddleName,
     string Surname,

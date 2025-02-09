@@ -1,8 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
-using PetFamily.Application.Extensions;
 using PetFamily.Application.Providers;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Volunteers.ValueObjects;

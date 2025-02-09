@@ -1,7 +1,6 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 public record UpdateVolunteerPaymentInfoCommand(
-    VolunteerId Id,
+    Guid Id,
     IEnumerable<PaymentInfoDto> PaymentInfos);

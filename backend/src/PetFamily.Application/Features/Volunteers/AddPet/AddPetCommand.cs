@@ -1,11 +1,10 @@
 ﻿using PetFamily.Application.Dtos;
 using PetFamily.Domain.Species.Ids;
 using PetFamily.Domain.Volunteers.Enums;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Application.Features.Volunteers.AddPet;
 public record AddPetCommand(
-        VolunteerId VolunteerId,
+        Guid VolunteerId,
         string Name,
         string Description,
         PetType Type,

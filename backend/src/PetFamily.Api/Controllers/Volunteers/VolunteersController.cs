@@ -11,7 +11,6 @@ using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
 using PetFamily.Application.Features.Volunteers.UploadPhotosToPet;
 using PetFamily.Application.Features.Volunteers.UploadPhotoToPet;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Api.Controllers.Volunteers;
 
@@ -37,7 +36,7 @@ public class VolunteersController : ControllerBase
         [FromServices] UpdateVolunteerMainInfoHandler updateVolunteerMainInfoHandler,
         CancellationToken cancellationToken)
     {
-        var command = request.ToCommand(VolunteerId.FromGuid(volunteerId));
+        var command = request.ToCommand(volunteerId);
         var result = await updateVolunteerMainInfoHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -49,7 +48,7 @@ public class VolunteersController : ControllerBase
         [FromServices] UpdateVolunteerSocialMediaHandler updateVolunteerSocialMediaHandler,
         CancellationToken cancellationToken)
     {
-        var command = request.ToCommand(VolunteerId.FromGuid(volunteerId));
+        var command = request.ToCommand(volunteerId);
         var result = await updateVolunteerSocialMediaHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -61,7 +60,7 @@ public class VolunteersController : ControllerBase
         [FromServices] UpdateVolunteerPaymentInfoHandler updateVolunteerPaymentInfoHandler,
         CancellationToken cancellationToken)
     {
-        var command = request.ToCommand(VolunteerId.FromGuid(volunteerId));
+        var command = request.ToCommand(volunteerId);
         var result = await updateVolunteerPaymentInfoHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -73,7 +72,7 @@ public class VolunteersController : ControllerBase
         [FromServices] DeleteVolunteerHandler deleteVolunteerHandler,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerCommand(VolunteerId.FromGuid(volunteerId), IsSoftDelete);
+        var request = new DeleteVolunteerCommand(volunteerId, IsSoftDelete);
         var result = await deleteVolunteerHandler.HandleAsync(request, cancellationToken);
 
         return result.ToResponse();
@@ -85,7 +84,7 @@ public class VolunteersController : ControllerBase
     [FromServices] AddPetHandler addPetHandler,
     CancellationToken cancellationToken)
     {
-        var command = request.ToCommand(VolunteerId.FromGuid(volunteerId));
+        var command = request.ToCommand(volunteerId);
         var result = await addPetHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -101,7 +100,7 @@ public class VolunteersController : ControllerBase
         await using var fileProcessor = new FormFileProcessor();
         var fileDtos = fileProcessor.Process(files);
 
-        var command = new UploadPetPhotosCommand(VolunteerId.FromGuid(volunteerId), PetId.FromGuid(petId), fileDtos);
+        var command = new UploadPetPhotosCommand(volunteerId, petId, fileDtos);
         var result = await uploadPetPhotoHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -114,7 +113,7 @@ public class VolunteersController : ControllerBase
         [FromServices] DeletePetPhotosHandler deletePetPhotoHandler,
         CancellationToken cancellationToken)
     {
-        var command = request.ToCommand(VolunteerId.FromGuid(volunteerId), PetId.FromGuid(petId));
+        var command = request.ToCommand(volunteerId, petId);
         var result = await deletePetPhotoHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();

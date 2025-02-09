@@ -4,7 +4,6 @@ using PetFamily.Api.Extensions;
 using PetFamily.Application.Features.Species.AddBreed;
 using PetFamily.Application.Features.Species.Create;
 using PetFamily.Application.Features.Species.Delete;
-using PetFamily.Domain.Species.Ids;
 
 namespace PetFamily.Api.Controllers.Species;
 
@@ -41,7 +40,7 @@ public class SpeciesController
         [FromServices] DeleteSpecieHandler deleteSpecieHandler,
         CancellationToken cancellationToken)
     {
-        var command = new DeleteSpecieCommand(PetSpecieId.FromGuid(id));
+        var command = new DeleteSpecieCommand(id);
         var result = await deleteSpecieHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();

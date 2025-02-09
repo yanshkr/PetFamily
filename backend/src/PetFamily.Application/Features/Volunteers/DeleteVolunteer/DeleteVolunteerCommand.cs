@@ -1,6 +1,4 @@
-﻿using PetFamily.Domain.Volunteers.Ids;
-
-namespace PetFamily.Application.Features.Volunteers.DeleteVolunteer;
+﻿namespace PetFamily.Application.Features.Volunteers.DeleteVolunteer;
 public record DeleteVolunteerCommand(
-    VolunteerId Id,
+    Guid Id,
     bool IsSoftDelete);

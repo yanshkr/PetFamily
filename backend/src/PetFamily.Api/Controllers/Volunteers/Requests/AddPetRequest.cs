@@ -1,8 +1,6 @@
 ﻿using PetFamily.Application.Dtos;
 using PetFamily.Application.Features.Volunteers.AddPet;
-using PetFamily.Domain.Species.Ids;
 using PetFamily.Domain.Volunteers.Enums;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 
@@ -22,14 +20,14 @@ public record AddPetRequest(
         bool IsSterilized,
         PetStatus Status)
 {
-    public AddPetCommand ToCommand(VolunteerId volunteerId)
+    public AddPetCommand ToCommand(Guid volunteerId)
         => new(
             volunteerId,
             Name,
             Description,
             Type,
-            PetSpecieId.FromGuid(SpecieId),
-            PetBreedId.FromGuid(BreedId),
+            SpecieId,
+            BreedId,
             Color,
             HealthInfo,
             Address,

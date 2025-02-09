@@ -1,5 +1,4 @@
 ﻿using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 
@@ -12,7 +11,7 @@ public record UpdateVolunteerRequest(
     int Experience,
     string PhoneNumber)
 {
-    public UpdateVolunteerCommand ToCommand(VolunteerId id) => new(
+    public UpdateVolunteerCommand ToCommand(Guid id) => new(
         id,
         FirstName,
         MiddleName,

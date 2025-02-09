@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Volunteers.Entities;
 using PetFamily.Domain.Volunteers.Enums;
 using PetFamily.Domain.Volunteers.Ids;

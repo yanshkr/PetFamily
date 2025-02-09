@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.Volunteers;
 
