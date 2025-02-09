@@ -1,4 +1,3 @@
-using PetFamily.Api;
 using PetFamily.Api.Exceptions;
 using PetFamily.Application;
 using PetFamily.Infrastructure;
@@ -24,8 +23,7 @@ builder.Services.AddSerilog();
 builder.Services.AddSwaggerGen();
 builder.Services
       .AddInfrastructure(builder.Configuration)
-      .AddApplication()
-      .AddApi();
+      .AddApplication();
 
 var app = builder.Build();
 

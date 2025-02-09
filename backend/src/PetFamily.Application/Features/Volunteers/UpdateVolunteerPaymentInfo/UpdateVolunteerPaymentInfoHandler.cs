@@ -1,40 +1,49 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo.Contracts;
+using PetFamily.Application.Database;
+using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
 public class UpdateVolunteerPaymentInfoHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateVolunteerPaymentInfoCommand> _validator;
     private readonly ILogger<UpdateVolunteerPaymentInfoHandler> _logger;
     public UpdateVolunteerPaymentInfoHandler(
         IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerPaymentInfoCommand> validator,
         ILogger<UpdateVolunteerPaymentInfoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> HandleAsync(
-        UpdateVolunteerPaymentInfoRequest request,
+    public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
+        UpdateVolunteerPaymentInfoCommand command,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogDebug("UpdateVolunteerPaymentInfoRequest: {@request}", request);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(request.Id, cancellationToken);
+        var volunteer = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
         if (volunteer.IsFailure)
-            return volunteer.Error;
+            return volunteer.Error.ToErrorList();
 
-        var paymentInfos = request.Dto.PaymentInfos.Select(x => PaymentInfo.Create(x.Name, x.Address).Value);
+        var paymentInfos = command.PaymentInfos.Select(x => PaymentInfo.Create(x.Name, x.Address).Value);
 
         volunteer.Value.UpdatePaymentInfo(paymentInfos);
 
-        await _volunteersRepository.SaveAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogDebug("Volunteer payment info updated: {@id}", volunteer.Value.Id.Value);
-
-        return volunteer.Value.Id.Value;
+        return volunteer.Value.Id;
     }
 }

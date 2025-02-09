@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.Volunteers;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
@@ -77,7 +76,7 @@ internal class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             {
                 pb.Property(p => p.Value)
                     .IsRequired(true)
-                    .HasMaxLength(15)
+                    .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH)
                     .HasColumnName("phone_number");
             });
 
@@ -87,7 +86,7 @@ internal class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired(true);
 
-        builder.Property(v => v.PaymentInfos)
+        builder.Property(p => p.PaymentInfos)
             .JsonValueObjectCollectionConversion()
             .IsRequired(true)
             .HasColumnName("payment_infos");

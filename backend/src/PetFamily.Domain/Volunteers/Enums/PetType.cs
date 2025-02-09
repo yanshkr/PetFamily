@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Domain.Enums;
+﻿namespace PetFamily.Domain.Volunteers.Enums;
 public enum PetType
 {
     Undefined = -1,

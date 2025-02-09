@@ -1,12 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Minio;
 using Minio.DataModel.Args;
-using Minio.DataModel.Response;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Providers;
 using PetFamily.Domain.Shared;
 using PetFamily.Infrastructure.Constants;
-using System.IO;
+using System.Collections.Concurrent;
 
 namespace PetFamily.Infrastructure.Providers;
 public class MinioProvider : IFilesProvider
@@ -16,86 +15,114 @@ public class MinioProvider : IFilesProvider
     {
         _minioClient = minioClient;
     }
-    public async Task<Result<string, Error>> UploadFileAsync(
-        FileData fileData,
+    public async Task<Result<IEnumerable<string>, ErrorList>> UploadFilesAsync(
+        IEnumerable<FileData> filesData,
+        string bucketName,
         CancellationToken cancellationToken = default)
     {
-        var ensureMakeBucketResult = await EnsureMakeBucketAsync(MinioConstants.BUCKET_NAME, cancellationToken);
+        var ensureMakeBucketResult = await EnsureMakeBucketAsync(bucketName, cancellationToken);
 
         if (ensureMakeBucketResult.IsFailure)
-            return ensureMakeBucketResult.ConvertFailure<string>();
+            return ensureMakeBucketResult.Error.ToErrorList();
 
-        var putObjectArgs = new PutObjectArgs()
-            .WithBucket(MinioConstants.BUCKET_NAME)
-            .WithStreamData(fileData.Stream)
-            .WithObjectSize(fileData.Stream.Length)
-            .WithObject(Guid.NewGuid().ToString() + '_' + fileData.FileInfo.ObjectName);
-
-        try
+        var options = new ParallelOptions
         {
-            var uploadResult = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+            MaxDegreeOfParallelism = MinioConstants.MAX_CONCURRENCY
+        };
 
-            return uploadResult.ObjectName;
-        }
-        catch
+        ConcurrentBag<string> uploadFiles = [];
+        List<Error> uploadErrors = [];
+        await Parallel.ForEachAsync(filesData, options, async (fileData, cancellationToken) =>
         {
-            return Errors.General.UploadFailure($"Failed to upload file '{fileData.FileInfo.ObjectName}' to bucket '{MinioConstants.BUCKET_NAME}'");
-        }
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(bucketName)
+                .WithStreamData(fileData.Stream)
+                .WithObjectSize(fileData.Stream.Length)
+                .WithObject(fileData.ObjectName);
+
+            try
+            {
+                var uploadResult = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+
+                uploadFiles.Add(uploadResult.ObjectName);
+            }
+            catch
+            {
+                uploadErrors.Add(Errors.General.UploadFailure(
+                    $"Failed to upload file '{fileData.ObjectName}' to bucket '{bucketName}'"));
+            }
+        });
+
+        if (uploadErrors.Count != 0)
+            return new ErrorList(uploadErrors);
+
+        return uploadFiles;
     }
-    public async Task<Result<string, Error>> DeleteFileAsync(
-        FileDataInfo fileInfo, 
-        CancellationToken cancellationToken = default)
-    {
-        var objectExistsResult = await IsFileExists(MinioConstants.BUCKET_NAME, fileInfo.ObjectName, cancellationToken);
-
-        if (objectExistsResult.IsFailure)
-            return objectExistsResult.Error;
-
-        if (!objectExistsResult.Value)
-            return fileInfo.ObjectName;
-
-        var removeObjectArgs = new RemoveObjectArgs()
-            .WithBucket(MinioConstants.BUCKET_NAME)
-            .WithObject(fileInfo.ObjectName);
-
-        try
-        {
-            await _minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken);
-        }
-        catch
-        {
-            return Errors.General.UploadFailure($"Failed to delete file '{fileInfo.ObjectName}' from bucket '{MinioConstants.BUCKET_NAME}'");
-        }
-
-        return fileInfo.ObjectName;
-    }
-
-    public async Task<Result<string, Error>> GetPredesignedFileLinkAsync(
-        FileDataInfo fileInfo, 
-        CancellationToken cancellationToken = default)
-    {
-        var presignedGetObjectArgs = new PresignedGetObjectArgs()
-            .WithBucket(MinioConstants.BUCKET_NAME)
-            .WithObject(fileInfo.ObjectName)
-            .WithExpiry((int)MinioConstants.DEFAULT_EXPIRY.TotalSeconds);
-
-        try
-        {
-            var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs);
-
-            return presignedUrl;
-        }
-        catch
-        {
-            return Errors.General.UploadFailure($"Failed to get presigned link for file '{fileInfo.ObjectName}' from bucket '{MinioConstants.BUCKET_NAME}'");
-        }
-    }
-    private async Task<Result<bool, Error>> IsFileExists(
+    public async Task<UnitResult<ErrorList>> DeleteFilesAsync(
+        IEnumerable<string> objectsName,
         string bucketName,
-        string objectName,
         CancellationToken cancellationToken = default)
     {
-        var bucketExistsResult = await IsBucketExists(bucketName, cancellationToken);
+        List<Error> deleteErrors = [];
+        foreach (var objectName in objectsName)
+        {
+            var fileExistsResult = await IsFileExistsAsync(objectName, bucketName, cancellationToken);
+
+            if (fileExistsResult.IsFailure)
+            {
+                deleteErrors.Add(fileExistsResult.Error);
+                continue;
+            }
+            else if (!fileExistsResult.Value)
+            {
+                continue;
+            }
+
+            var removeObjectArgs = new RemoveObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(objectName);
+
+            try
+            {
+                await _minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken);
+            }
+            catch
+            {
+                deleteErrors.Add(Errors.General.UploadFailure(
+                    $"Failed to delete file '{objectName}' from bucket '{bucketName}'."));
+            }
+        }
+
+        return UnitResult.Success<ErrorList>();
+    }
+    //public async Task<Result<string, Error>> GetPredesignedFileLinkAsync(
+    //    string objectName,
+    //    string bucketName,
+    //    CancellationToken cancellationToken = default)
+    //{
+    //    var presignedGetObjectArgs = new PresignedGetObjectArgs()
+    //        .WithBucket(bucketName)
+    //        .WithObject(objectName)
+    //        .WithExpiry(MinioConstants.DEFAULT_EXPIRY);
+
+    //    try
+    //    {
+    //        var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs);
+
+    //        return presignedUrl;
+    //    }
+    //    catch
+    //    {
+    //        return Errors.General.UploadFailure(
+    //            $"Failed to get presigned link for file '{objectName}' from bucket '{bucketName}'.");
+    //    }
+    //}
+    private async Task<Result<bool, Error>> IsFileExistsAsync(
+        string objectName,
+        string bucketName,
+        CancellationToken cancellationToken = default)
+    {
+        var bucketExistsResult = await IsBucketExistsAsync(bucketName, cancellationToken);
 
         if (bucketExistsResult.IsFailure)
             return bucketExistsResult;
@@ -115,10 +142,11 @@ public class MinioProvider : IFilesProvider
         }
         catch
         {
-            return Errors.General.UploadFailure($"Failed to check if object '{objectName}' exists in bucket '{bucketName}'");
+            return Errors.General.UploadFailure(
+                $"Failed to check if object '{objectName}' exists in bucket '{bucketName}'");
         }
     }
-    private async Task<Result<bool, Error>> IsBucketExists(
+    private async Task<Result<bool, Error>> IsBucketExistsAsync(
         string bucketName,
         CancellationToken cancellationToken = default)
     {
@@ -138,7 +166,7 @@ public class MinioProvider : IFilesProvider
         string bucketName,
         CancellationToken cancellationToken = default)
     {
-        var bucketExistsResult = await IsBucketExists(bucketName, cancellationToken);
+        var bucketExistsResult = await IsBucketExistsAsync(bucketName, cancellationToken);
 
         if (bucketExistsResult.IsFailure)
             return bucketExistsResult;

@@ -1,46 +1,43 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Features.Volunteers.DeleteVolunteer.Contracts;
+using PetFamily.Application.Database;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Application.Features.Volunteers.DeleteVolunteer;
 public class DeleteVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteVolunteerHandler> _logger;
     public DeleteVolunteerHandler(
         IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
         ILogger<DeleteVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> HandleAsync(
-        DeleteVolunteerRequest request,
+    public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
+        DeleteVolunteerCommand request,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogDebug("DeleteVolunteerRequest: {@request}", request);
-
         var volunteer = await _volunteersRepository.GetByIdAsync(request.Id, cancellationToken);
         if (volunteer.IsFailure)
-            return volunteer.Error;
+            return volunteer.Error.ToErrorList();
 
         if (volunteer.Value.IsDeleted && request.IsSoftDelete)
-        {
-            _logger.LogWarning("Volunteer already deleted: {@id}", volunteer.Value.Id.Value);
-            return volunteer.Value.Id.Value;
-        }
+            return volunteer.Value.Id;
 
         if (request.IsSoftDelete)
             volunteer.Value.Delete();
         else
             _volunteersRepository.Delete(volunteer.Value);
 
-        await _volunteersRepository.SaveAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogDebug("Volunteer deleted: {@id}", volunteer.Value.Id.Value);
-
-        return volunteer.Value.Id.Value;
+        return volunteer.Value.Id;
     }
 }

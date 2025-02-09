@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Shared.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record Address
 {
     public const int MAX_VALUE_LENGTH = 200;
@@ -13,7 +14,7 @@ public record Address
         string state,
         string city,
         string street,
-        uint zipCode)
+        int zipCode)
     {
         Country = country;
         State = state;
@@ -26,14 +27,14 @@ public record Address
     public string State { get; }
     public string City { get; }
     public string Street { get; }
-    public uint ZipCode { get; }
+    public int ZipCode { get; }
 
     public static Result<Address, Error> Create(
         string country,
         string state,
         string city,
         string street,
-        uint zipCode)
+        int zipCode)
     {
         if (string.IsNullOrWhiteSpace(country) || country.Length > MAX_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Country");

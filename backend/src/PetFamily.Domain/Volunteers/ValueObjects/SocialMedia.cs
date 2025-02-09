@@ -3,7 +3,7 @@ using PetFamily.Domain.Shared;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record SocialMedia
 {
     private const string URL_REGEX = @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";

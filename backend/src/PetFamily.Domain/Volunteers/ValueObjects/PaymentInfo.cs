@@ -3,7 +3,7 @@ using PetFamily.Domain.Shared;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record PaymentInfo
 {
     private const string CREDIT_CARD_REGEX = @"^(\d{4}[- ]?){3}\d{4}$";

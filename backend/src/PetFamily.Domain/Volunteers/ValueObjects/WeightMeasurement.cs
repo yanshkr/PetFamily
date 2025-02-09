@@ -1,22 +1,22 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Volunteers.ValueObjects;
 public record WeightMeasurement
 {
     public const int MIN_VALUE = 1;
     public const int MAX_VALUE = 100000;
 
     private WeightMeasurement(
-        uint grams
+        int grams
         )
     {
         Grams = grams;
     }
 
-    public uint Grams { get; }
+    public int Grams { get; }
 
-    public static Result<WeightMeasurement, Error> CreateFromGrams(uint grams)
+    public static Result<WeightMeasurement, Error> CreateFromGrams(int grams)
     {
         if (grams is < MIN_VALUE or > MAX_VALUE)
             return Errors.General.ValueIsInvalid("Weight", MIN_VALUE, MAX_VALUE);
@@ -25,6 +25,6 @@ public record WeightMeasurement
     }
     public static Result<WeightMeasurement, Error> CreateFromKilograms(decimal kilograms)
     {
-        return CreateFromGrams((uint)Math.Round(kilograms * 1000));
+        return CreateFromGrams((int)Math.Round(kilograms * 1000));
     }
 }
