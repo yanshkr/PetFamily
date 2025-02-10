@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Background;
 using PetFamily.Application.Database;
 using PetFamily.Application.Features.Volunteers.UploadPhotoToPet;
 using PetFamily.Application.FileProvider;
@@ -16,18 +17,21 @@ public class UploadPetPhotosHandler
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFilesProvider _filesProvider;
+    private readonly IFileCleanerQueue _fileCleanerQueue;
     //private readonly IValidator<UploadPetPhotosCommand> _validator;
     private readonly ILogger<UploadPetPhotosHandler> _logger;
     public UploadPetPhotosHandler(
         IVolunteersRepository volunteersRepository,
         IUnitOfWork unitOfWork,
         IFilesProvider filesProvider,
+        IFileCleanerQueue fileCleanerQueue,
         //IValidator<UploadPetPhotosCommand> validator,
         ILogger<UploadPetPhotosHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _unitOfWork = unitOfWork;
         _filesProvider = filesProvider;
+        _fileCleanerQueue = fileCleanerQueue;
         //_validator = validator;
         _logger = logger;
     }
@@ -48,14 +52,21 @@ public class UploadPetPhotosHandler
         if (pet.IsFailure)
             return pet.Error.ToErrorList();
 
+        var photosToUpload = command.Photos.Select(
+                x => new FileData(x.Content, FileNameHelpers.GetRandomizedFileName(x.FileName)));
+
         var uploadResult = await _filesProvider.UploadFilesAsync(
-            command.Photos.Select(
-                x => new FileData(x.Content, FileNameHelpers.GetRandomizedFileName(x.FileName))),
+            photosToUpload,
             BUCKET_NAME,
             cancellationToken);
 
         if (uploadResult.IsFailure)
+        {
+            var photosToDelete = photosToUpload.Select(p => p.ObjectName);
+            await _fileCleanerQueue.PublishAsync(photosToDelete, cancellationToken);
+
             return uploadResult.Error;
+        }
 
         List<Photo> photos = [];
         foreach (var uploadPhoto in uploadResult.Value)
