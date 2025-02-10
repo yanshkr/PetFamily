@@ -26,11 +26,11 @@ public class RedudantFileCleanerService : BackgroundService
     {
         _logger.LogInformation("RedudantFileCleanerService is starting.");
 
-        await using var scope = _serviceScopeFactory.CreateAsyncScope();
-        var filesProvider = scope.ServiceProvider.GetRequiredService<IFilesProvider>();
-
         while (!stoppingToken.IsCancellationRequested)
         {
+            await using var scope = _serviceScopeFactory.CreateAsyncScope();
+            var filesProvider = scope.ServiceProvider.GetRequiredService<IFilesProvider>();
+
             var filesToDelete = await _fileCleanerQueue.ConsumeAsync(stoppingToken);
                
             _logger.LogInformation("Deleting {0} files", filesToDelete.Count());
