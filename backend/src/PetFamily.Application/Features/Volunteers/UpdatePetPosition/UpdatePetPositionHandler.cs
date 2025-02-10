@@ -3,15 +3,9 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetFamily.Application.Features.Volunteers.UpdatePetPosition;
 public class UpdatePetPositionHandler

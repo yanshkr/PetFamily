@@ -4,11 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.AspNetCore;
+using PetFamily.Application.Background;
 using PetFamily.Application.Database;
 using PetFamily.Application.Features.Species;
 using PetFamily.Application.Features.Volunteers;
 using PetFamily.Application.Providers;
+using PetFamily.Infrastructure.BackgroudServices;
 using PetFamily.Infrastructure.Constants;
+using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Providers;
 using PetFamily.Infrastructure.Repositories;
 
@@ -21,7 +24,8 @@ public static class DependencyInjection
     {
         return services
             .InjectDatabase(configuration)
-            .InjectMinio(configuration);
+            .InjectMinio(configuration)
+            .InjectFilesCleaner();
     }
     public static IServiceCollection InjectDatabase(
         this IServiceCollection services,
@@ -52,6 +56,13 @@ public static class DependencyInjection
         });
 
         services.AddSingleton<IFilesProvider, MinioProvider>();
+
+        return services;
+    }
+    public static IServiceCollection InjectFilesCleaner(this IServiceCollection services)
+    {
+        services.AddHostedService<RedudantFileCleanerService>();
+        services.AddSingleton<IFileCleanerQueue, FileCleanerQueue>();
 
         return services;
     }
