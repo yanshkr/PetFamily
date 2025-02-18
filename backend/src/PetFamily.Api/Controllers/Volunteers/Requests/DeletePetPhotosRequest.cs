@@ -1,4 +1,4 @@
-﻿using PetFamily.Application.Features.Volunteers.DeletePhotosAtPet;
+﻿using PetFamily.Application.Features.Commands.Volunteers.DeletePhotosAtPet;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 public record DeletePetPhotosRequest(IEnumerable<string> Photos)

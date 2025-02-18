@@ -1,5 +1,5 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Application.Features.Volunteers.UpdateVolunteerSocialMedia;
+using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 public record UpdateVolunteerSocialMediaRequest(

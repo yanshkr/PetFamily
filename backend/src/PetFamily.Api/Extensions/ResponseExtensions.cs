@@ -22,5 +22,4 @@ public static class ResponseExtensions
                 }
                 : StatusCodes.Status200OK
         };
-
 }

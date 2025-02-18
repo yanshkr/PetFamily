@@ -1,5 +1,5 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Application.Features.Volunteers.UpdateVolunteerPaymentInfo;
+using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 public record UpdateVolunteerPaymentInfoRequest(IEnumerable<PaymentInfoDto> PaymentInfos)

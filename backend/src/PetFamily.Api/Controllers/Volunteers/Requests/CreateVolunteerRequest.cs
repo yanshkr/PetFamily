@@ -1,5 +1,5 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Application.Features.Volunteers.CreateVolunteer;
+using PetFamily.Application.Features.Commands.Volunteers.CreateVolunteer;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 
