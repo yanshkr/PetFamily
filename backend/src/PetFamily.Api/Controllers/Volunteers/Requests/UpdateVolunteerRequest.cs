@@ -1,4 +1,4 @@
-﻿using PetFamily.Application.Features.Volunteers.UpdateVolunteerMainInfo;
+﻿using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 

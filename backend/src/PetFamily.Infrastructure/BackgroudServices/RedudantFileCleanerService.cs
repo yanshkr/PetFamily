@@ -32,7 +32,7 @@ public class RedudantFileCleanerService : BackgroundService
             var filesProvider = scope.ServiceProvider.GetRequiredService<IFilesProvider>();
 
             var filesToDelete = await _fileCleanerQueue.ConsumeAsync(stoppingToken);
-               
+
             _logger.LogInformation("Deleting {0} files", filesToDelete.Count());
             await filesProvider.DeleteFilesAsync(filesToDelete, BUCKET_NAME, stoppingToken);
         }

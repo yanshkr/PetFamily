@@ -6,11 +6,12 @@ using Minio;
 using Minio.AspNetCore;
 using PetFamily.Application.Background;
 using PetFamily.Application.Database;
-using PetFamily.Application.Features.Species;
-using PetFamily.Application.Features.Volunteers;
+using PetFamily.Application.Features.Commands.Species;
+using PetFamily.Application.Features.Commands.Volunteers;
 using PetFamily.Application.Providers;
 using PetFamily.Infrastructure.BackgroudServices;
 using PetFamily.Infrastructure.Constants;
+using PetFamily.Infrastructure.DbContexts;
 using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Providers;
 using PetFamily.Infrastructure.Repositories;
@@ -31,10 +32,19 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
+        services.AddDbContext<IReadDbContext, ReadDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("Database"));
             options.UseSnakeCaseNamingConvention();
+            options.EnableSensitiveDataLogging();
+            options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+        });
+
+        services.AddDbContext<WriteDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("Database"));
+            options.UseSnakeCaseNamingConvention();
+            options.EnableSensitiveDataLogging();
             options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         });
 

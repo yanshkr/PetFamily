@@ -1,4 +1,4 @@
-﻿using PetFamily.Application.Features.Volunteers.UpdatePetPosition;
+﻿using PetFamily.Application.Features.Commands.Volunteers.UpdatePetPosition;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 public record UpdatePetPositionRequest(int Position)

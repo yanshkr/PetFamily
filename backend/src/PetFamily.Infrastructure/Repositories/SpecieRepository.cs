@@ -1,16 +1,17 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Application.Features.Species;
+using PetFamily.Application.Features.Commands.Species;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.Species.Ids;
+using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 public class SpecieRepository : ISpeciesRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public SpecieRepository(ApplicationDbContext dbContext)
+    public SpecieRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }
