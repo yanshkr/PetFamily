@@ -7,8 +7,8 @@ using PetFamily.Application.Dtos;
 using PetFamily.Application.Features.Commands.Volunteers.AddPet;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Application.Features.Queries.GetVolunteerById;
-public class GetVolunteerByIdHandler 
+namespace PetFamily.Application.Features.Queries.Volunteers.GetVolunteerById;
+public class GetVolunteerByIdHandler
     : IQueryHandler<Result<VolunteerDto, ErrorList>, GetVolunteerByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;

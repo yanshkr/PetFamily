@@ -9,7 +9,7 @@ using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
-public class UpdateVolunteerSocialMediaHandler 
+public class UpdateVolunteerSocialMediaHandler
     : ICommandHandler<VolunteerId, UpdateVolunteerSocialMediaCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
