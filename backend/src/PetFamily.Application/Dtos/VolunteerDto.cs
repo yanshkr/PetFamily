@@ -1,12 +1,14 @@
 ﻿namespace PetFamily.Application.Dtos;
-public record VolunteerDto(
-    Guid Id,
-    string FirstName,
-    string MiddleName,
-    string LastName,
-    string Email,
-    string PhoneNumber,
-    string Description,
-    int ExperienceYears,
-    IReadOnlyList<PaymentInfoDto> PaymentInfos,
-    IReadOnlyList<SocialMediaDto> SocialMedias);
+public class VolunteerDto
+{
+    public Guid Id { get; init; }
+    public string FirstName { get; init; } = null!;
+    public string MiddleName { get; init; } = null!;
+    public string LastName { get; init; } = null!;
+    public string Email { get; init; } = null!;
+    public string PhoneNumber { get; init; } = null!;
+    public string Description { get; init; } = null!;
+    public int ExperienceYears { get; init; }
+    public IReadOnlyList<PaymentInfoDto> PaymentInfos { get; init; } =[];
+    public IReadOnlyList<SocialMediaDto> SocialMedias { get; init; } = [];
+}
