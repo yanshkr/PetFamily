@@ -42,4 +42,8 @@ public class PetSpecie : BaseEntity<PetSpecieId>
     {
         _breeds.Add(breed);
     }
+    public void RemoveBreed(PetBreed breed)
+    {
+        _breeds.Remove(breed);
+    }
 }
