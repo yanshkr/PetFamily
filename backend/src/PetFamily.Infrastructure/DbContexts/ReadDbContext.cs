@@ -6,6 +6,9 @@ namespace PetFamily.Infrastructure.DbContexts;
 internal class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbContext(options), IReadDbContext
 {
     public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    public IQueryable<PetDto> Pets => Set<PetDto>();
+    public IQueryable<SpecieDto> Species => Set<SpecieDto>();
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

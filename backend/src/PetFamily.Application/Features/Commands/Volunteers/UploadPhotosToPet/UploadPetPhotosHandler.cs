@@ -10,7 +10,7 @@ using PetFamily.Domain.Shared;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
 namespace PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
-public class UploadPetPhotosHandler 
+public class UploadPetPhotosHandler
     : ICommandHandler<IEnumerable<string>, UploadPetPhotosCommand>
 {
     private const string BUCKET_NAME = "petfamily";

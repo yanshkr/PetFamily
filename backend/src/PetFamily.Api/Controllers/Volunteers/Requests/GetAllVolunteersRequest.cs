@@ -1,4 +1,4 @@
-﻿using PetFamily.Application.Features.Queries.GetAllVolunteersWithPagination;
+﻿using PetFamily.Application.Features.Queries.Volunteers.GetAllVolunteersWithPagination;
 
 namespace PetFamily.Api.Controllers.Volunteers.Requests;
 public record GetAllVolunteersRequest(

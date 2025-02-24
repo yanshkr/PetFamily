@@ -1,5 +1,7 @@
 ﻿namespace PetFamily.Application.Dtos;
-public record FullNameDto(
-    string FirstName,
-    string MiddleName,
-    string Surname);
+public class FullNameDto
+{
+    public string FirstName { get; init; } = null!;
+    public string MiddleName { get; init; } = null!;
+    public string Surname { get; init; } = null!;
+}

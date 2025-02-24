@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Application.Dtos;
-public class PaymentInfoDto
+public class SpecieDto
 {
+    public Guid Id { get; init; }
     public string Name { get; init; } = null!;
-    public string Address { get; init; } = null!;
 }

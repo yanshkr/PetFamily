@@ -11,8 +11,8 @@ using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
 using PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
-using PetFamily.Application.Features.Queries.GetAllVolunteersWithPagination;
-using PetFamily.Application.Features.Queries.GetVolunteerById;
+using PetFamily.Application.Features.Queries.Volunteers.GetAllVolunteersWithPagination;
+using PetFamily.Application.Features.Queries.Volunteers.GetVolunteerById;
 
 namespace PetFamily.Api.Controllers.Volunteers;
 

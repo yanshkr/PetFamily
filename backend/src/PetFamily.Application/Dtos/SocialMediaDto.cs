@@ -1,5 +1,6 @@
 ﻿namespace PetFamily.Application.Dtos;
-
-public record SocialMediaDto(
-    string Url,
-    string Type);
+public class SocialMediaDto
+{
+    public string Url { get; init; } = null!;
+    public string Type { get; init; } = null!;
+}
