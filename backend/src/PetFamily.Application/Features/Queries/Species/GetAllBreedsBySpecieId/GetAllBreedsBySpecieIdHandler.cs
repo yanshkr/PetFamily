@@ -24,16 +24,16 @@ public class GetAllBreedsBySpecieIdHandler
         GetAllBreedsBySpecieIdQuery query,
         CancellationToken cancellationToken = default)
     {
-        var volunteersQuery = _readDbContext.Breeds;
+        var breedsQuery = _readDbContext.Breeds;
 
-        volunteersQuery = volunteersQuery
+        breedsQuery = breedsQuery
             .Where(b => b.SpecieId == query.SpecieId);
 
-        volunteersQuery = volunteersQuery.WhereIf(
+        breedsQuery = breedsQuery.WhereIf(
                 !string.IsNullOrWhiteSpace(query.Name),
                 x => x.Name.Contains(query.Name!));
 
-        return await volunteersQuery
+        return await breedsQuery
             .ToPagedList(query.Page, query.PageSize, cancellationToken);
     }
 }

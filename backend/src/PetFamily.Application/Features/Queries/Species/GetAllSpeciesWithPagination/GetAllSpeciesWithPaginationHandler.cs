@@ -24,13 +24,13 @@ public class GetAllSpeciesWithPaginationHandler
         GetAllSpeciesWithPaginationQuery query,
         CancellationToken cancellationToken = default)
     {
-        var volunteersQuery = _readDbContext.Species;
+        var speciesQuery = _readDbContext.Species;
 
-        volunteersQuery = volunteersQuery.WhereIf(
+        speciesQuery = speciesQuery.WhereIf(
                 !string.IsNullOrWhiteSpace(query.Name),
                 x => x.Name.Contains(query.Name!));
 
-        return await volunteersQuery
+        return await speciesQuery
             .ToPagedList(query.Page, query.PageSize, cancellationToken);
     }
 }
