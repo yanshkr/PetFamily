@@ -36,16 +36,16 @@ public class UpdateVolunteerSocialMediaHandler
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
         var socialMedias = command.SocialMedias.Select(x => SocialMedia.Create(x.Type, x.Url).Value);
 
-        volunteer.Value.UpdateSocialMedia(socialMedias);
+        volunteerResult.Value.UpdateSocialMedia(socialMedias);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return volunteer.Value.Id;
+        return volunteerResult.Value.Id;
     }
 }

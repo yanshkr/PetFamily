@@ -9,6 +9,6 @@ public class VolunteerDto
     public string PhoneNumber { get; init; } = null!;
     public string Description { get; init; } = null!;
     public int ExperienceYears { get; init; }
-    public IReadOnlyList<PaymentInfoDto> PaymentInfos { get; init; } =[];
+    public IReadOnlyList<PaymentInfoDto> PaymentInfos { get; init; } = [];
     public IReadOnlyList<SocialMediaDto> SocialMedias { get; init; } = [];
 }

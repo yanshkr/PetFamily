@@ -31,4 +31,6 @@ public record Photo
 
         return new Photo(fileName);
     }
+
+    public static Photo CreateEmpty() => new Photo(string.Empty);
 }

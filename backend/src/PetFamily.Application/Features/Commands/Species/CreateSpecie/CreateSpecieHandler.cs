@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstraction;
 using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.Features.Commands.Species.AddBreed;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species;
@@ -40,13 +39,12 @@ public class CreateSpecieHandler
 
         var petSpecieId = PetSpecieId.NewPetSpecieId();
         var name = Name.Create(command.Name).Value;
-
         var petSpecie = PetSpecie.Create(petSpecieId, name).Value;
 
-        var result = await _speciesRepository.AddAsync(petSpecie, cancellationToken);
+        await _speciesRepository.AddAsync(petSpecie, cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return result;
+        return petSpecieId;
     }
 }

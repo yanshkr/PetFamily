@@ -52,6 +52,7 @@ public class Pet : SoftDeletableEntity<PetId>
         BirthDate = birthDate;
         IsSterilized = isSterilized;
         Status = status;
+        MainPhoto = Photo.CreateEmpty();
     }
 
     public Name Name { get; private set; }
@@ -70,6 +71,7 @@ public class Pet : SoftDeletableEntity<PetId>
     public bool IsVaccinated => _vaccines.Count != 0;
 
     public PetPosition PetPosition { get; private set; } = null!;
+    public Photo MainPhoto { get; private set; }
 
     public IReadOnlyList<Vaccine> Vaccines => _vaccines;
     public IReadOnlyList<PaymentInfo> PaymentInfos => _paymentInfos;
@@ -118,12 +120,25 @@ public class Pet : SoftDeletableEntity<PetId>
             height,
             birthDate,
             isSterilized,
-            status
-            );
+            status);
     }
 
+    public UnitResult<Error> UpdateMainPhoto(Photo photo)
+    {
+        if (!_photos.Contains(photo))
+            return Errors.General.ValueIsRequired("Photo");
+
+        MainPhoto = photo;
+
+        return UnitResult.Success<Error>();
+    }
     public void AddPhotos(List<Photo> photos)
     {
+        if (photos.Count == 0)
+            return;
+
+        MainPhoto ??= photos.First();
+
         _photos.AddRange(photos);
     }
     public void RemovePhotos(List<Photo> photos)
@@ -132,6 +147,40 @@ public class Pet : SoftDeletableEntity<PetId>
         {
             _photos.Remove(photo);
         }
+    }
+
+    public void UpdateMainInfo(
+        Name name,
+        Description description,
+        PetType type,
+        PetBreed breed,
+        PetSpecie specie,
+        Color color,
+        HealthInfo healthInfo,
+        Address address,
+        PhoneNumber phoneNumber,
+        WeightMeasurement weight,
+        HeightMeasurement height,
+        DateTime birthDate,
+        bool isSterilized)
+    {
+        Name = name;
+        Description = description;
+        Type = type;
+        Breed = breed;
+        Specie = specie;
+        Color = color;
+        HealthInfo = healthInfo;
+        Address = address;
+        PhoneNumber = phoneNumber;
+        Weight = weight;
+        Height = height;
+        BirthDate = birthDate;
+        IsSterilized = isSterilized;
+    }
+    public void UpdateStatus(PetStatus status)
+    {
+        Status = status;
     }
 
     public void SetPetPosition(PetPosition serialNumber)

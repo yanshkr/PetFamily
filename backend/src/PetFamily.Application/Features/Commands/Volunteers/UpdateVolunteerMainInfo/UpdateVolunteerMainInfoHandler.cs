@@ -29,27 +29,27 @@ public class UpdateVolunteerMainInfoHandler
     }
 
     public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
-        UpdateVolunteerCommand request,
+        UpdateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var fullName = FullName.Create(request.FirstName, request.MiddleName, request.Surname).Value;
-        var email = Email.Create(request.Email).Value;
-        var description = Description.Create(request.Description).Value;
-        var experience = ExperienceYears.Create(request.Experience).Value;
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
+        var fullName = FullName.Create(command.FirstName, command.MiddleName, command.Surname).Value;
+        var email = Email.Create(command.Email).Value;
+        var description = Description.Create(command.Description).Value;
+        var experience = ExperienceYears.Create(command.Experience).Value;
+        var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
 
-        volunteer.Value.UpdateMainInfo(fullName, email, description, experience, phoneNumber);
+        volunteerResult.Value.UpdateMainInfo(fullName, email, description, experience, phoneNumber);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return volunteer.Value.Id;
+        return volunteerResult.Value.Id;
     }
 }

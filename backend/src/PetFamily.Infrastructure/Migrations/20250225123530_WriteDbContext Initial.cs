@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace PetFamily.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialWriteDbMigration : Migration
+    public partial class WriteDbContextInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -93,6 +94,7 @@ namespace PetFamily.Infrastructure.Migrations
                     description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     health_info = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     height = table.Column<int>(type: "integer", nullable: false),
+                    main_photo = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     serial_number = table.Column<int>(type: "integer", nullable: false),
                     phone_number = table.Column<string>(type: "text", nullable: false),

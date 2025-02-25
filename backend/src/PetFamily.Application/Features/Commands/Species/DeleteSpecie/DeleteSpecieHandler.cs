@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstraction;
 using PetFamily.Application.Database;
-using PetFamily.Application.Features.Commands.Species.DeleteBreed;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species.Ids;
 

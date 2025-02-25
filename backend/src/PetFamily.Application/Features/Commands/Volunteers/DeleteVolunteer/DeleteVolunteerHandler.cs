@@ -23,23 +23,23 @@ public class DeleteVolunteerHandler
     }
 
     public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
-        DeleteVolunteerCommand request,
+        DeleteVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
-        var volunteer = await _volunteersRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        if (volunteer.Value.IsDeleted && request.IsSoftDelete)
-            return volunteer.Value.Id;
+        if (volunteerResult.Value.IsDeleted && command.IsSoftDelete)
+            return volunteerResult.Value.Id;
 
-        if (request.IsSoftDelete)
-            volunteer.Value.Delete();
+        if (command.IsSoftDelete)
+            volunteerResult.Value.Delete();
         else
-            _volunteersRepository.Delete(volunteer.Value);
+            _volunteersRepository.Delete(volunteerResult.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return volunteer.Value.Id;
+        return volunteerResult.Value.Id;
     }
 }

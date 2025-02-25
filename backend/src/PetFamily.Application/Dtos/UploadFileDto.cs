@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Application.Dtos;
 public class UploadFileDto
-{ 
+{
     public Stream Content { get; init; } = null!;
     public string FileName { get; init; } = null!;
 

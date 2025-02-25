@@ -156,6 +156,15 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
                     .HasColumnName("serial_number");
             });
 
+        builder.ComplexProperty(
+            p => p.MainPhoto,
+            pb =>
+            {
+                pb.Property(s => s.FileName)
+                    .IsRequired(true)
+                    .HasColumnName("main_photo");
+            });
+
         builder.Property(p => p.Status)
             .IsRequired(true)
             .HasDefaultValue(PetStatus.Undefined)

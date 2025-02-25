@@ -8,19 +8,19 @@ using PetFamily.Domain.Shared;
 using PetFamily.Domain.Volunteers.Ids;
 using PetFamily.Domain.Volunteers.ValueObjects;
 
-namespace PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
-public class UpdateVolunteerPaymentInfoHandler
-    : ICommandHandler<VolunteerId, UpdateVolunteerPaymentInfoCommand>
+namespace PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainPhoto;
+public class UpdatePetMainPhotoHandler
+    : ICommandHandler<PetId, UpdatePetMainPhotoCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<UpdateVolunteerPaymentInfoCommand> _validator;
-    private readonly ILogger<UpdateVolunteerPaymentInfoHandler> _logger;
-    public UpdateVolunteerPaymentInfoHandler(
+    private readonly IValidator<UpdatePetMainPhotoCommand> _validator;
+    private readonly ILogger<UpdatePetMainPhotoHandler> _logger;
+    public UpdatePetMainPhotoHandler(
         IVolunteersRepository volunteersRepository,
         IUnitOfWork unitOfWork,
-        IValidator<UpdateVolunteerPaymentInfoCommand> validator,
-        ILogger<UpdateVolunteerPaymentInfoHandler> logger)
+        IValidator<UpdatePetMainPhotoCommand> validator,
+        ILogger<UpdatePetMainPhotoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _unitOfWork = unitOfWork;
@@ -28,24 +28,30 @@ public class UpdateVolunteerPaymentInfoHandler
         _logger = logger;
     }
 
-    public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
-        UpdateVolunteerPaymentInfoCommand command,
+    public async Task<Result<PetId, ErrorList>> HandleAsync(
+        UpdatePetMainPhotoCommand command,
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        var paymentInfos = command.PaymentInfos.Select(x => PaymentInfo.Create(x.Name, x.Address).Value);
+        var petResult = volunteerResult.Value.GetPetById(command.PetId);
+        if (petResult.IsFailure)
+            return petResult.Error.ToErrorList();
 
-        volunteerResult.Value.UpdatePaymentInfo(paymentInfos);
+        var photo = Photo.Create(command.FileName).Value;
+
+        var updateResult = petResult.Value.UpdateMainPhoto(photo);
+        if (updateResult.IsFailure)
+            return updateResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return volunteerResult.Value.Id;
+        return petResult.Value.Id;
     }
 }

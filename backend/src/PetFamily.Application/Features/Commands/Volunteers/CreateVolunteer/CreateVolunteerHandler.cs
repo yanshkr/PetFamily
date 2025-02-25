@@ -30,25 +30,24 @@ public class CreateVolunteerHandler
     }
 
     public async Task<Result<VolunteerId, ErrorList>> HandleAsync(
-        CreateVolunteerCommand request,
+        CreateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var fullName = FullName.Create(request.FullName.FirstName, request.FullName.MiddleName, request.FullName.Surname).Value;
-        var email = Email.Create(request.Email).Value;
-        var description = Description.Create(request.Description).Value;
-        var experience = ExperienceYears.Create(request.Experience).Value;
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
+        var fullName = FullName.Create(command.FullName.FirstName, command.FullName.MiddleName, command.FullName.Surname).Value;
+        var email = Email.Create(command.Email).Value;
+        var description = Description.Create(command.Description).Value;
+        var experience = ExperienceYears.Create(command.Experience).Value;
+        var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
 
-        var volunteer = Volunteer.Create(VolunteerId.NewVolunteerId(), fullName, email, description, experience, phoneNumber);
+        var volunteerResult = Volunteer.Create(VolunteerId.NewVolunteerId(), fullName, email, description, experience, phoneNumber);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
-
-        var guidVolunteer = await _volunteersRepository.AddAsync(volunteer.Value, cancellationToken);
+        var guidVolunteer = await _volunteersRepository.AddAsync(volunteerResult.Value, cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

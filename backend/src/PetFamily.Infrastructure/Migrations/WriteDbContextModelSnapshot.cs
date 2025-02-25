@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetFamily.Infrastructure.DbContexts;
@@ -13,11 +12,9 @@ using PetFamily.Infrastructure.DbContexts;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20250218180551_InitialWriteDbMigration")]
-    partial class InitialWriteDbMigration
+    partial class WriteDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,6 +240,16 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.Property<int>("Centimeters")
                                 .HasColumnType("integer")
                                 .HasColumnName("height");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("MainPhoto", "PetFamily.Domain.Volunteers.Entities.Pet.MainPhoto#Photo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("FileName")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("main_photo");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Volunteers.Entities.Pet.Name#Name", b1 =>

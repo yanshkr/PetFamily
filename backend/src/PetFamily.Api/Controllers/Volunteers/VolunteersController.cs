@@ -4,9 +4,13 @@ using PetFamily.Api.Extensions;
 using PetFamily.Api.Processors;
 using PetFamily.Application.Features.Commands.Volunteers.AddPet;
 using PetFamily.Application.Features.Commands.Volunteers.CreateVolunteer;
+using PetFamily.Application.Features.Commands.Volunteers.DeletePet;
 using PetFamily.Application.Features.Commands.Volunteers.DeletePhotosAtPet;
 using PetFamily.Application.Features.Commands.Volunteers.DeleteVolunteer;
+using PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainInfo;
+using PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainPhoto;
 using PetFamily.Application.Features.Commands.Volunteers.UpdatePetPosition;
+using PetFamily.Application.Features.Commands.Volunteers.UpdatePetStatus;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
@@ -97,8 +101,8 @@ public class VolunteersController : ControllerBase
         [FromServices] DeleteVolunteerHandler deleteVolunteerHandler,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerCommand(volunteerId, IsSoftDelete);
-        var result = await deleteVolunteerHandler.HandleAsync(request, cancellationToken);
+        var command = new DeleteVolunteerCommand(volunteerId, IsSoftDelete);
+        var result = await deleteVolunteerHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -111,6 +115,45 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId);
         var result = await addPetHandler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-info")]
+    public async Task<IActionResult> UpdatePetMainInfo(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetMainInfoRequest request,
+        [FromServices] UpdatePetMainInfoHandler updatePetMainInfoHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+        var result = await updatePetMainInfoHandler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpPatch("{volunteerId:guid}/pet/{petId:guid}/status")]
+    public async Task<IActionResult> UpdatePetStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetStatusRequest request,
+        [FromServices] UpdatePetStatusHandler updatePetStatusHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+        var result = await updatePetStatusHandler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-photo")]
+    public async Task<IActionResult> UpdatePetMainPhoto(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetMainPhotoRequest request,
+        [FromServices] UpdatePetMainPhotoHandler updatePetMainPhotoHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+        var result = await updatePetMainPhotoHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -144,7 +187,7 @@ public class VolunteersController : ControllerBase
         return result.ToResponse();
     }
     [HttpPatch("{volunteerId:guid}/pet/{petId:guid}/position")]
-    public async Task<IActionResult> UpdatePetPostion(
+    public async Task<IActionResult> UpdatePetPosition(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
         [FromBody] UpdatePetPositionRequest request,
@@ -153,6 +196,19 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
         var result = await updatePetPositionHandler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}")]
+    public async Task<IActionResult> DeletePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromQuery] bool IsSoftDelete,
+        [FromServices] DeletePetHandler deletePetHandler,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeletePetCommand(volunteerId, petId, IsSoftDelete);
+        var result = await deletePetHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
