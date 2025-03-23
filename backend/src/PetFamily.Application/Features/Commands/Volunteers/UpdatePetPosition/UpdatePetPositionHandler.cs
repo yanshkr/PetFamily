@@ -36,22 +36,22 @@ public class UpdatePetPositionHandler
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var pet = volunteer.Value.GetPetById(command.PetId);
-        if (pet.IsFailure)
-            return pet.Error.ToErrorList();
+        var petResult = volunteerResult.Value.GetPetById(command.PetId);
+        if (petResult.IsFailure)
+            return petResult.Error.ToErrorList();
 
         var position = PetPosition.Create(command.Position).Value;
-        var moveResult = volunteer.Value.MovePet(pet.Value, position);
+        var moveResult = volunteerResult.Value.MovePet(petResult.Value, position);
 
         if (moveResult.IsFailure)
             return moveResult.Error.ToErrorList();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return volunteer.Value.Id;
+        return volunteerResult.Value.Id;
     }
 }

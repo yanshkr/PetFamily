@@ -45,13 +45,13 @@ public class UploadPetPhotosHandler
         //if (!validationResult.IsValid)
         //    return validationResult.ToErrorList();
 
-        var volunteer = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var pet = volunteer.Value.GetPetById(command.PetId);
-        if (pet.IsFailure)
-            return pet.Error.ToErrorList();
+        var petResult = volunteerResult.Value.GetPetById(command.PetId);
+        if (petResult.IsFailure)
+            return petResult.Error.ToErrorList();
 
         var photosToUpload = command.Photos.Select(
                 x => new FileData(x.Content, FileNameHelpers.GetRandomizedFileName(x.FileName)));
@@ -80,7 +80,7 @@ public class UploadPetPhotosHandler
             photos.Add(photo.Value);
         }
 
-        pet.Value.AddPhotos(photos);
+        petResult.Value.AddPhotos(photos);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
