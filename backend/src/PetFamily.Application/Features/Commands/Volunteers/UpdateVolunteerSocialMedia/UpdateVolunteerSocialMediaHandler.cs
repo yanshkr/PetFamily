@@ -40,7 +40,7 @@ public class UpdateVolunteerSocialMediaHandler
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        var socialMedias = command.SocialMedias.Select(x => SocialMedia.Create(x.Type, x.Url).Value);
+        var socialMedias = command.SocialMedias.Select(x => SocialMedia.Create(x.Name, x.Url).Value);
 
         volunteerResult.Value.UpdateSocialMedia(socialMedias);
 

@@ -7,7 +7,7 @@ public class SocialMediaDtoValidator : AbstractValidator<SocialMediaDto>
 {
     public SocialMediaDtoValidator()
     {
-        RuleFor(sm => new { sm.Url, sm.Type })
-            .MustBeValueObject(sm => SocialMedia.Create(sm.Type, sm.Url));
+        RuleFor(sm => new { sm.Url, sm.Name })
+            .MustBeValueObject(sm => SocialMedia.Create(sm.Name, sm.Url));
     }
 }

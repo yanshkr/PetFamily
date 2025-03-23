@@ -19,6 +19,7 @@ public class PetDto
     public DateTime BirthDate { get; init; }
     public bool IsSterilized { get; init; }
     public int PetPosition { get; init; }
+    public string MainPhoto { get; init; } = null!;
     public IReadOnlyList<VaccineDto> Vaccines { get; init; } = [];
     public IReadOnlyList<PaymentInfoDto> PaymentInfos { get; init; } = [];
     public IReadOnlyList<PhotoDto> Photos { get; init; } = [];
