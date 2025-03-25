@@ -3,7 +3,7 @@ using PetFamily.Application.Database;
 using PetFamily.Application.Dtos;
 
 namespace PetFamily.Infrastructure.DbContexts;
-internal class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbContext(options), IReadDbContext
+public class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbContext(options), IReadDbContext
 {
     public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
     public IQueryable<PetDto> Pets => Set<PetDto>();

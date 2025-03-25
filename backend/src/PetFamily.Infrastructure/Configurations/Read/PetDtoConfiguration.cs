@@ -34,6 +34,7 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
 
         builder.Property(p => p.Type)
             .IsRequired(true)
+            .HasConversion<string>()
             .HasColumnName("type");
 
         builder.Property(p => p.BreedId)
@@ -106,7 +107,11 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
 
         builder.Property(p => p.PetPosition)
             .IsRequired(true)
-            .HasColumnName("pet_position");
+            .HasColumnName("position");
+
+        builder.Property(p => p.MainPhoto)
+            .IsRequired(true)
+            .HasColumnName("main_photo");
 
         builder.Property(p => p.Vaccines)
             .JsonValueObjectCollectionConversion()
@@ -125,6 +130,7 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
 
         builder.Property(p => p.Status)
             .IsRequired(true)
+            .HasConversion<string>()
             .HasColumnName("status");
     }
 }

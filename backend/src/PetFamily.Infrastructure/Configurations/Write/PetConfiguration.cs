@@ -48,7 +48,7 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasDefaultValue(PetType.Undefined)
             .HasSentinel(PetType.Undefined)
             .HasConversion<string>()
-            .HasColumnName("pet_type");
+            .HasColumnName("type");
 
         builder.HasOne(p => p.Breed)
             .WithMany()
@@ -145,7 +145,7 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(p => p.IsSterilized)
             .IsRequired(true)
-            .HasColumnName("sterilized");
+            .HasColumnName("is_sterilized");
 
         builder.ComplexProperty(
             p => p.PetPosition,
@@ -153,7 +153,7 @@ internal class PetConfiguration : IEntityTypeConfiguration<Pet>
             {
                 sb.Property(s => s.Value)
                     .IsRequired(true)
-                    .HasColumnName("serial_number");
+                    .HasColumnName("position");
             });
 
         builder.ComplexProperty(
