@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Abstraction;
 using PetFamily.Application.Features.Commands.Volunteers.DeletePhotosAtPet;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.DeletePhotosAtPet;
 public class DeletePhotosAtPetTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)

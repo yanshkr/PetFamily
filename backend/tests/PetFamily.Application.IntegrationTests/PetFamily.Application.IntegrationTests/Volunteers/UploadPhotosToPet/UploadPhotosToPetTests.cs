@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Abstraction;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
-using PetFamily.Domain.Volunteers.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UploadPhotosToPet;
 public class UploadPhotosToPetTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
