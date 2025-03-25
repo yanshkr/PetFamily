@@ -15,6 +15,8 @@ using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
 using PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
+using PetFamily.Application.Features.Queries.Pets.GetAllPetsWithPagination;
+using PetFamily.Application.Features.Queries.Pets.GetPetById;
 using PetFamily.Application.Features.Queries.Volunteers.GetAllVolunteersWithPagination;
 using PetFamily.Application.Features.Queries.Volunteers.GetVolunteerById;
 
@@ -105,6 +107,28 @@ public class VolunteersController : ControllerBase
         var result = await deleteVolunteerHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
+    }
+    [HttpGet("pet/{petId:guid}")]
+    public async Task<IActionResult> GetPet(
+        [FromRoute] Guid petId,
+        [FromServices] GetPetByIdHandler getPetByIdHandler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPetByIdQuery(petId);
+        var result = await getPetByIdHandler.HandleAsync(query, cancellationToken);
+
+        return result.ToResponse();
+    }
+    [HttpGet("pet")]
+    public async Task<IActionResult> GetAllPets(
+        [FromQuery] GetAllPetsRequest request,
+        [FromServices] GetAllPetsWithPaginationHandler getAllPetsWithPaginationHandler,
+        CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery();
+        var result = await getAllPetsWithPaginationHandler.HandleAsync(query, cancellationToken);
+
+        return Ok(result);
     }
     [HttpPost("{volunteerId:guid}/pet")]
     public async Task<IActionResult> AddPet(
