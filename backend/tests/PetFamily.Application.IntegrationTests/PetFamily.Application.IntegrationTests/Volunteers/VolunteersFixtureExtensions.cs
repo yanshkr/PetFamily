@@ -6,7 +6,6 @@ using PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
 using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
-using PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers;
 public static class VolunteersFixtureExtensions
