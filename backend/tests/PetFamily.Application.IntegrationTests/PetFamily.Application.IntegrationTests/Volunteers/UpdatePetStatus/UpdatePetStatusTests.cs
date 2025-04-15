@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdatePetStatus;
-using PetFamily.Domain.Volunteers.Enums;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdatePetStatus;
+using PetFamily.Volunteers.Domain.Enums;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdatePetStatus;
 public class UpdatePetStatusTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -29,6 +29,6 @@ public class UpdatePetStatusTests(VolunteersTestsWebFactory webFactory) : Volunt
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault(p => p.Id == pet.Id && p.Status == PetStatus.ShelterFound).Should().NotBeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault(p => p.Id == pet.Id && p.Status == PetStatus.ShelterFound).Should().NotBeNull();
     }
 }

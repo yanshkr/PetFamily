@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.DeletePhotosAtPet;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.DeletePhotosAtPet;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.DeletePhotosAtPet;
 public class DeletePhotosAtPetTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -29,6 +29,6 @@ public class DeletePhotosAtPetTests(VolunteersTestsWebFactory webFactory) : Volu
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault(p => p.Id == pet.Id)!.Photos.Count.Should().Be(0);
+        _volunteersReadDbContext.Pets.FirstOrDefault(p => p.Id == pet.Id)!.Photos.Count.Should().Be(0);
     }
 }

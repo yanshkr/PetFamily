@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
-using PetFamily.Application.Features.Commands.Species.AddBreed;
-using PetFamily.Application.Features.Commands.Species.Create;
+using PetFamily.Species.Application.Commands.AddBreed;
+using PetFamily.Species.Application.Commands.CreateSpecie;
 
 namespace PetFamily.Application.IntegrationTests.Species;
 public static class SpeciesFixtureExtensions

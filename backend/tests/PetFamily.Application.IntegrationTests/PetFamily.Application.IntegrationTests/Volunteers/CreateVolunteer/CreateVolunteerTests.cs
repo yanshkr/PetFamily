@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.CreateVolunteer;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.CreateVolunteer;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.CreateVolunteer;
 public class CreateVolunteerTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -21,6 +21,6 @@ public class CreateVolunteerTests(VolunteersTestsWebFactory webFactory) : Volunt
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Volunteers.FirstOrDefault().Should().NotBeNull();
+        _volunteersReadDbContext.Volunteers.FirstOrDefault().Should().NotBeNull();
     }
 }

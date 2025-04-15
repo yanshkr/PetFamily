@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.DeletePet;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.DeletePet;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.DeletePet;
 public class DeletePetTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -29,7 +29,7 @@ public class DeletePetTests(VolunteersTestsWebFactory webFactory) : VolunteersBa
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault().Should().BeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault().Should().BeNull();
     }
     [Fact]
     public async Task Delete_Pet_Soft_Should_Be_Success()
@@ -52,7 +52,7 @@ public class DeletePetTests(VolunteersTestsWebFactory webFactory) : VolunteersBa
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _writeDbContext.Volunteers
+        _volunteersWriteDbContext.Volunteers
             .Include(v => v.Pets)
             .FirstOrDefault(v => v.Id == volunteer.Id)!
             .Pets.FirstOrDefault(p => p.Id == pet.Id && p.IsDeleted)

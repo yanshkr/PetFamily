@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using PetFamily.Application.Database;
-using PetFamily.Infrastructure.DbContexts;
 using Testcontainers.PostgreSql;
 
 namespace PetFamily.Application.IntegrationTests;
@@ -24,16 +22,39 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
     }
     protected virtual void ConfigureDefaultServices(IServiceCollection services)
     {
-        services.RemoveAll(typeof(ReadDbContext));
-        services.RemoveAll(typeof(WriteDbContext));
+        ConfigureSpecies(services);
+        ConfigureVolunteers(services);
+    }
 
-        services.AddDbContext<IReadDbContext, ReadDbContext>(options =>
+    private void ConfigureSpecies(IServiceCollection services)
+    {
+        services.RemoveAll(typeof(SpeciesReadDbContext));
+        services.RemoveAll(typeof(SpeciesWriteDbContext));
+
+        services.AddDbContext<SpeciesReadDbContextInterface, SpeciesReadDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
             options.UseSnakeCaseNamingConvention();
         });
 
-        services.AddDbContext<WriteDbContext>(options =>
+        services.AddDbContext<SpeciesWriteDbContext>(options =>
+        {
+            options.UseNpgsql(postgreSqlContainer.GetConnectionString());
+            options.UseSnakeCaseNamingConvention();
+        });
+    }
+    private void ConfigureVolunteers(IServiceCollection services)
+    {
+        services.RemoveAll(typeof(VolunteersReadDbContext));
+        services.RemoveAll(typeof(VolunteersWriteDbContext));
+
+        services.AddDbContext<VolunteersReadDbContextInterface, VolunteersReadDbContext>(options =>
+        {
+            options.UseNpgsql(postgreSqlContainer.GetConnectionString());
+            options.UseSnakeCaseNamingConvention();
+        });
+
+        services.AddDbContext<VolunteersWriteDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
             options.UseSnakeCaseNamingConvention();
@@ -50,12 +71,15 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
     public async Task ResetDatabaseAsync()
     {
         using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+        var speciesDbContext = scope.ServiceProvider.GetRequiredService<SpeciesWriteDbContext>();
+        var volunteersDbContext = scope.ServiceProvider.GetRequiredService<VolunteersWriteDbContext>();
 
-        await dbContext.Database.EnsureDeletedAsync();
-        await dbContext.Database.EnsureCreatedAsync();
+        await speciesDbContext.Database.EnsureDeletedAsync();
+        await volunteersDbContext.Database.EnsureDeletedAsync();
+
+        await speciesDbContext.Database.MigrateAsync();
+        await volunteersDbContext.Database.MigrateAsync();
     }
-
     public new async Task DisposeAsync()
     {
         await postgreSqlContainer.StopAsync();

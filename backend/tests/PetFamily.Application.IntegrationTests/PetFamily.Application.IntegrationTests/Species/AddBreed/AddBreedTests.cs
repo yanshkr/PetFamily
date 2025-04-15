@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Species.AddBreed;
-using PetFamily.Domain.Species.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Species.Application.Commands.AddBreed;
+using PetFamily.Species.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Species.AddBreed;
 public class AddBreedTests(IntegrationTestsWebFactory webFactory) : SpeciesBaseTests(webFactory)
@@ -23,6 +23,6 @@ public class AddBreedTests(IntegrationTestsWebFactory webFactory) : SpeciesBaseT
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Breeds.FirstOrDefault().Should().NotBeNull();
+        _speciesReadDbContext.Breeds.FirstOrDefault().Should().NotBeNull();
     }
 }

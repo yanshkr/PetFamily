@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdatePetPosition;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdatePetPosition;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdatePetPosition;
 public class UpdatePetPositionTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -30,6 +30,6 @@ public class UpdatePetPositionTests(VolunteersTestsWebFactory webFactory) : Volu
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault(p => p.Id == pet2.Id && p.PetPosition == 1).Should().NotBeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault(p => p.Id == pet2.Id && p.PetPosition == 1).Should().NotBeNull();
     }
 }

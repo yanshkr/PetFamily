@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainPhoto;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdatePetMainPhoto;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdatePetMainPhoto;
 public class UpdatePetMainPhotoTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -30,6 +30,6 @@ public class UpdatePetMainPhotoTests(VolunteersTestsWebFactory webFactory) : Vol
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.MainPhoto.Should().Be("photo2.png");
+        _volunteersReadDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.MainPhoto.Should().Be("photo2.png");
     }
 }

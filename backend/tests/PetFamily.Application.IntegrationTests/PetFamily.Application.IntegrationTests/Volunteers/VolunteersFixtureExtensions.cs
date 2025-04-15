@@ -1,11 +1,12 @@
 ﻿using AutoFixture;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.Features.Commands.Volunteers.AddPet;
-using PetFamily.Application.Features.Commands.Volunteers.CreateVolunteer;
-using PetFamily.Application.Features.Commands.Volunteers.UpdatePetMainInfo;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
+using PetFamily.Volunteers.Application.Commands.AddPet;
+using PetFamily.Volunteers.Application.Commands.CreateVolunteer;
+using PetFamily.Volunteers.Application.Commands.UpdatePetMainInfo;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerMainInfo;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerPaymentInfo;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerSocialMedia;
+using PetFamily.Volunteers.Contracts.Dtos.Shared;
+using PetFamily.Volunteers.Contracts.Dtos.Volunteer;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers;
 public static class VolunteersFixtureExtensions
