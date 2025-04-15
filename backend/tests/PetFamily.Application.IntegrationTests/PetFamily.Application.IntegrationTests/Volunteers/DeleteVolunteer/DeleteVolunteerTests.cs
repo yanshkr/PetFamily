@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.DeleteVolunteer;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.DeleteVolunteer;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.DeleteVolunteer;
 public class DeleteVolunteerTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -24,7 +24,7 @@ public class DeleteVolunteerTests(VolunteersTestsWebFactory webFactory) : Volunt
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Volunteers.FirstOrDefault().Should().BeNull();
+        _volunteersReadDbContext.Volunteers.FirstOrDefault().Should().BeNull();
     }
     [Fact]
     public async Task Delete_Volunteer_Soft_Should_Be_Success()
@@ -43,7 +43,7 @@ public class DeleteVolunteerTests(VolunteersTestsWebFactory webFactory) : Volunt
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _writeDbContext.Volunteers
+        _volunteersWriteDbContext.Volunteers
             .FirstOrDefault(v => v.Id == volunteer.Id && v.IsDeleted)
             .Should().NotBeNull();
     }

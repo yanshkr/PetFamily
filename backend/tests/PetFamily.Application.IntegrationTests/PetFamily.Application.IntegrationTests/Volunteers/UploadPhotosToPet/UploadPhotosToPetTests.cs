@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.Features.Commands.Volunteers.UploadPhotosToPet;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UploadPhotosToPet;
+using PetFamily.Volunteers.Contracts.Dtos.Pet;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UploadPhotosToPet;
 public class UploadPhotosToPetTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -30,8 +30,8 @@ public class UploadPhotosToPetTests(VolunteersTestsWebFactory webFactory) : Volu
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id).Should().NotBeNull();
-        _readDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.Photos.Count.Should().Be(2);
+        _volunteersReadDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id).Should().NotBeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.Photos.Count.Should().Be(2);
     }
     [Fact]
     public async Task Upload_Photos_To_Pet_Should_Be_Fail()
@@ -55,7 +55,7 @@ public class UploadPhotosToPetTests(VolunteersTestsWebFactory webFactory) : Volu
         // Assert
         result.IsSuccess.Should().BeFalse();
 
-        _readDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id).Should().NotBeNull();
-        _readDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.Photos.Count.Should().Be(0);
+        _volunteersReadDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id).Should().NotBeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault(v => v.Id == pet.Id)!.Photos.Count.Should().Be(0);
     }
 }

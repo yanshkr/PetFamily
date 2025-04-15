@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerSocialMedia;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerSocialMedia;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdateVolunteerSocialMedia;
 public class UpdateVolunteerSocialMediaTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -24,7 +24,7 @@ public class UpdateVolunteerSocialMediaTests(VolunteersTestsWebFactory webFactor
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        var volunteerFromDb = _readDbContext.Volunteers.FirstOrDefault(v => v.Id == volunteer.Id);
+        var volunteerFromDb = _volunteersReadDbContext.Volunteers.FirstOrDefault(v => v.Id == volunteer.Id);
         volunteerFromDb!.SocialMedias.FirstOrDefault(vb => vb.Name == "updatedSocialName").Should().NotBeNull();
     }
 }

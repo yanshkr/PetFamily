@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
-using PetFamily.Application.FileProvider;
-using PetFamily.Application.Providers;
-using PetFamily.Domain.Shared;
+using PetFamily.SharedKernel.ErrorManagement;
+using PetFamily.Volunteers.Application.FileProvider;
+using PetFamily.Volunteers.Application.Providers;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers;
 public class VolunteersTestsWebFactory : IntegrationTestsWebFactory

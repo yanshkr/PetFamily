@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerPaymentInfo;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerPaymentInfo;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdateVolunteerPaymentInfo;
 public class UpdateVolunteerPaymentInfoTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -24,7 +24,7 @@ public class UpdateVolunteerPaymentInfoTests(VolunteersTestsWebFactory webFactor
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        var volunteerFromDb = _readDbContext.Volunteers.FirstOrDefault(v => v.Id == volunteer.Id);
+        var volunteerFromDb = _volunteersReadDbContext.Volunteers.FirstOrDefault(v => v.Id == volunteer.Id);
         volunteerFromDb!.PaymentInfos.FirstOrDefault(vb => vb.Name == "updatedPaymentName").Should().NotBeNull();
     }
 }

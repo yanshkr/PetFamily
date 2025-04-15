@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Species.Create;
-using PetFamily.Domain.Species.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Species.Application.Commands.CreateSpecie;
+using PetFamily.Species.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Species.CreateSpecie;
 public class CreateSpecieTests(IntegrationTestsWebFactory factory) : SpeciesBaseTests(factory)
@@ -22,6 +22,6 @@ public class CreateSpecieTests(IntegrationTestsWebFactory factory) : SpeciesBase
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Species.FirstOrDefault().Should().NotBeNull();
+        _speciesReadDbContext.Species.FirstOrDefault().Should().NotBeNull();
     }
 }

@@ -1,31 +1,33 @@
 ﻿using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Species;
-using PetFamily.Domain.Species.Entities;
-using PetFamily.Domain.Species.Ids;
-using PetFamily.Domain.Volunteers;
-using PetFamily.Domain.Volunteers.Entities;
-using PetFamily.Domain.Volunteers.Enums;
-using PetFamily.Domain.Volunteers.Ids;
-using PetFamily.Domain.Volunteers.ValueObjects;
-using PetFamily.Infrastructure.DbContexts;
+using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.Species.Domain.Entities;
+using PetFamily.Species.Domain.Ids;
+using PetFamily.Species.Infrastructure.DbContexts;
+using PetFamily.Volunteers.Domain.Entities;
+using PetFamily.Volunteers.Domain.Enums;
+using PetFamily.Volunteers.Domain.Ids;
+using PetFamily.Volunteers.Domain.ValueObjects;
 
 namespace PetFamily.Application.IntegrationTests.Species;
 public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyncLifetime
 {
     protected readonly IntegrationTestsWebFactory _factory;
     protected readonly IServiceScope _scope;
-    protected readonly WriteDbContext _writeDbContext;
-    protected readonly ReadDbContext _readDbContext;
+    protected readonly VolunteersWriteDbContext _volunteersWriteDbContext;
+    protected readonly VolunteersReadDbContext _volunteersReadDbContext;
+    protected readonly SpeciesWriteDbContext _speciesWriteDbContext;
+    protected readonly SpeciesReadDbContext _speciesReadDbContext;
     protected readonly IFixture _fixture;
 
     public SpeciesBaseTests(IntegrationTestsWebFactory factory)
     {
         _factory = factory;
         _scope = _factory.Services.CreateScope();
-        _writeDbContext = _scope.ServiceProvider.GetRequiredService<WriteDbContext>();
-        _readDbContext = _scope.ServiceProvider.GetRequiredService<ReadDbContext>();
+        _volunteersWriteDbContext = _scope.ServiceProvider.GetRequiredService<VolunteersWriteDbContext>();
+        _volunteersReadDbContext = _scope.ServiceProvider.GetRequiredService<VolunteersReadDbContext>();
+        _speciesWriteDbContext = _scope.ServiceProvider.GetRequiredService<SpeciesWriteDbContext>();
+        _speciesReadDbContext = _scope.ServiceProvider.GetRequiredService<SpeciesReadDbContext>();
         _fixture = new Fixture();
     }
 
@@ -36,9 +38,8 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
 
         var specie = PetSpecie.Create(specieId, name).Value;
 
-        await _writeDbContext.PetSpecies.AddAsync(specie);
-
-        await _writeDbContext.SaveChangesAsync();
+        await _speciesWriteDbContext.PetSpecies.AddAsync(specie);
+        await _speciesWriteDbContext.SaveChangesAsync();
 
         return specie;
     }
@@ -51,7 +52,7 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
 
         specie.AddBreed(breed);
 
-        await _writeDbContext.SaveChangesAsync();
+        await _speciesWriteDbContext.SaveChangesAsync();
 
         return breed;
     }
@@ -66,9 +67,8 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
 
         var volunteer = Volunteer.Create(volunteerId, fullName, email, description, experience, phoneNumber).Value;
 
-        await _writeDbContext.Volunteers.AddAsync(volunteer);
-
-        await _writeDbContext.SaveChangesAsync();
+        await _volunteersWriteDbContext.Volunteers.AddAsync(volunteer);
+        await _volunteersWriteDbContext.SaveChangesAsync();
 
         return volunteer;
     }
@@ -77,8 +77,8 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
         var petId = PetId.NewPetId();
         var name = Name.Create("Test").Value;
         var description = Description.Create("Test").Value;
+        var classification = PetClassification.Create(petBreed.Id, petSpecie.Id).Value;
         var breed = petBreed;
-        var specie = petSpecie;
         var color = Color.Create("Test").Value;
         var healthInfo = HealthInfo.Create("Test").Value;
         var address = Address.Create("Test", "Test", "Test", "Test", 1234).Value;
@@ -91,8 +91,7 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
             name,
             description,
             PetType.Dog,
-            breed,
-            specie,
+            classification,
             color,
             healthInfo,
             address,
@@ -105,7 +104,7 @@ public class SpeciesBaseTests : IClassFixture<IntegrationTestsWebFactory>, IAsyn
 
         volunteer.AddPet(pet);
 
-        await _writeDbContext.SaveChangesAsync();
+        await _volunteersWriteDbContext.SaveChangesAsync();
 
         return pet;
     }

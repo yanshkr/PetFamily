@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Species.Delete;
-using PetFamily.Domain.Species.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Species.Application.Commands.DeleteSpecie;
+using PetFamily.Species.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Species.DeleteSpecie;
 public class DeleteSpecieTests(IntegrationTestsWebFactory factory) : SpeciesBaseTests(factory)
@@ -23,7 +23,7 @@ public class DeleteSpecieTests(IntegrationTestsWebFactory factory) : SpeciesBase
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(specie.Id);
 
-        _readDbContext.Species.FirstOrDefault().Should().BeNull();
+        _speciesReadDbContext.Species.FirstOrDefault().Should().BeNull();
     }
     [Fact]
     public async Task Delete_Specie_With_Existing_Pet_Should_Be_Fail()
@@ -46,8 +46,8 @@ public class DeleteSpecieTests(IntegrationTestsWebFactory factory) : SpeciesBase
         result.IsFailure.Should().BeTrue();
         result.Error.Should().NotBeNull();
 
-        _readDbContext.Species.FirstOrDefault().Should().NotBeNull();
-        _readDbContext.Pets.FirstOrDefault().Should().NotBeNull();
+        _speciesReadDbContext.Species.FirstOrDefault().Should().NotBeNull();
+        _volunteersReadDbContext.Pets.FirstOrDefault().Should().NotBeNull();
     }
     [Fact]
     public async Task Delete_Specie_With_Invalid_Id_Should_Fail()

@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstraction;
-using PetFamily.Application.Features.Commands.Volunteers.UpdateVolunteerMainInfo;
-using PetFamily.Domain.Volunteers.Ids;
+using PetFamily.Core.Abstraction;
+using PetFamily.Volunteers.Application.Commands.UpdateVolunteerMainInfo;
+using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Application.IntegrationTests.Volunteers.UpdateVolunteerMainInfo;
 public class UpdateVolunteerMainInfoTests(VolunteersTestsWebFactory webFactory) : VolunteersBaseTests(webFactory)
@@ -24,7 +24,7 @@ public class UpdateVolunteerMainInfoTests(VolunteersTestsWebFactory webFactory) 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
 
-        _readDbContext.Volunteers
+        _volunteersReadDbContext.Volunteers
             .FirstOrDefault(v => v.Id == volunteer.Id && v.FirstName == "updatedName")
             .Should().NotBeNull();
     }
