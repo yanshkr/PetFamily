@@ -51,14 +51,30 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
             .IsRequired(true)
             .HasColumnName("experience_years");
 
-        builder.Property(v => v.PaymentInfos)
-            .JsonValueObjectCollectionConversion()
-            .IsRequired(true)
-            .HasColumnName("payment_infos");
+        builder.OwnsMany(v => v.PaymentInfos, pb =>
+        {
+            pb.ToJson("payment_infos");
 
-        builder.Property(v => v.SocialMedias)
-            .JsonValueObjectCollectionConversion()
-            .IsRequired(true)
-            .HasColumnName("social_medias");
+            pb.Property(p => p.Name)
+                .IsRequired(true)
+                .HasColumnName("name");
+
+            pb.Property(p => p.Address)
+                .IsRequired(true)
+                .HasColumnName("address");
+        });
+
+        builder.OwnsMany(v => v.SocialMedias, smb =>
+        {
+            smb.ToJson("social_medias");
+
+            smb.Property(p => p.Url)
+                .IsRequired(true)
+                .HasColumnName("url");
+
+            smb.Property(p => p.Name)
+                .IsRequired(true)
+                .HasColumnName("name");
+        });
     }
 }
