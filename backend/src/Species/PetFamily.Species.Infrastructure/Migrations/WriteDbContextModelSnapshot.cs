@@ -18,7 +18,8 @@ namespace PetFamily.Species.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasDefaultSchema("species")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -30,16 +31,13 @@ namespace PetFamily.Species.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("specie_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("specie_id");
+                        .HasColumnType("uuid");
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Species.Domain.Entities.PetBreed.Name#Name", b1 =>
                         {
@@ -52,13 +50,11 @@ namespace PetFamily.Species.Infrastructure.Migrations
                                 .HasColumnName("name");
                         });
 
-                    b.HasKey("Id")
-                        .HasName("pk_breeds");
+                    b.HasKey("Id");
 
-                    b.HasIndex("specie_id")
-                        .HasDatabaseName("ix_breeds_specie_id");
+                    b.HasIndex("specie_id");
 
-                    b.ToTable("breeds", (string)null);
+                    b.ToTable("breeds", "species");
                 });
 
             modelBuilder.Entity("PetFamily.Species.Domain.Entities.PetSpecie", b =>
@@ -68,12 +64,10 @@ namespace PetFamily.Species.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Species.Domain.Entities.PetSpecie.Name#Name", b1 =>
                         {
@@ -86,10 +80,9 @@ namespace PetFamily.Species.Infrastructure.Migrations
                                 .HasColumnName("name");
                         });
 
-                    b.HasKey("Id")
-                        .HasName("pk_species");
+                    b.HasKey("Id");
 
-                    b.ToTable("species", (string)null);
+                    b.ToTable("species", "species");
                 });
 
             modelBuilder.Entity("PetFamily.Species.Domain.Entities.PetBreed", b =>
@@ -98,8 +91,7 @@ namespace PetFamily.Species.Infrastructure.Migrations
                         .WithMany("Breeds")
                         .HasForeignKey("specie_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_breeds_species_specie_id");
+                        .IsRequired();
 
                     b.Navigation("Specie");
                 });

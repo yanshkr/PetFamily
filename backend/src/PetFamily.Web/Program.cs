@@ -10,9 +10,11 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSerilog();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
+
 builder.Services.AddVolunteersModule(builder.Configuration);
 builder.Services.AddSpeciesModule(builder.Configuration);
+builder.Services.AddAccountsModule(builder.Configuration);
 
 var app = builder.Build();
 

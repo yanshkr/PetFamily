@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework.Extensions;
 using PetFamily.Species.Application.Commands.AddBreed;
 using PetFamily.Species.Application.Commands.CreateSpecie;
@@ -10,6 +11,7 @@ using PetFamily.Species.Presentation.Species.Requests;
 namespace PetFamily.Species.Presentation.Species;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class SpeciesController : ControllerBase
 {

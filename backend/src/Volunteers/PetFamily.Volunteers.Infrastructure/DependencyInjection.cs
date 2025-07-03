@@ -27,14 +27,14 @@ public static class DependencyInjection
             .InjectMinio(configuration)
             .InjectFilesCleaner();
     }
-    public static IServiceCollection InjectDatabase(
+
+    private static IServiceCollection InjectDatabase(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<IReadDbContext, ReadDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("Database"));
-            options.UseSnakeCaseNamingConvention();
             options.EnableSensitiveDataLogging();
             options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         });
@@ -42,7 +42,6 @@ public static class DependencyInjection
         services.AddDbContext<WriteDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("Database"));
-            options.UseSnakeCaseNamingConvention();
             options.EnableSensitiveDataLogging();
             options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         });
@@ -52,7 +51,8 @@ public static class DependencyInjection
 
         return services;
     }
-    public static IServiceCollection InjectMinio(
+
+    private static IServiceCollection InjectMinio(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -67,7 +67,8 @@ public static class DependencyInjection
 
         return services;
     }
-    public static IServiceCollection InjectFilesCleaner(this IServiceCollection services)
+
+    private static IServiceCollection InjectFilesCleaner(this IServiceCollection services)
     {
         services.AddHostedService<RedudantFileCleanerService>();
         services.AddSingleton<IFileCleanerQueue, FileCleanerQueue>();
