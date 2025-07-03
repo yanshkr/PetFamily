@@ -11,43 +11,50 @@ namespace PetFamily.Species.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "species");
+
             migrationBuilder.CreateTable(
                 name: "species",
+                schema: "species",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_species", x => x.id);
+                    table.PrimaryKey("PK_species", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "breeds",
+                schema: "species",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     specie_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_breeds", x => x.id);
+                    table.PrimaryKey("PK_breeds", x => x.id);
                     table.ForeignKey(
-                        name: "fk_breeds_species_specie_id",
+                        name: "FK_breeds_species_specie_id",
                         column: x => x.specie_id,
+                        principalSchema: "species",
                         principalTable: "species",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_breeds_specie_id",
+                name: "IX_breeds_specie_id",
+                schema: "species",
                 table: "breeds",
                 column: "specie_id");
         }
@@ -56,10 +63,12 @@ namespace PetFamily.Species.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "breeds");
+                name: "breeds",
+                schema: "species");
 
             migrationBuilder.DropTable(
-                name: "species");
+                name: "species",
+                schema: "species");
         }
     }
 }

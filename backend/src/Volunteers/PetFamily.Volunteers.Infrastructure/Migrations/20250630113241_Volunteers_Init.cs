@@ -11,13 +11,15 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "volunteers");
+
             migrationBuilder.CreateTable(
                 name: "volunteers",
+                schema: "volunteers",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    payment_infos = table.Column<string>(type: "text", nullable: false),
-                    social_medias = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     experience_years = table.Column<int>(type: "integer", nullable: false),
@@ -28,15 +30,18 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    payment_infos = table.Column<string>(type: "jsonb", nullable: true),
+                    social_medias = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_volunteers", x => x.id);
+                    table.PrimaryKey("PK_volunteers", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "pets",
+                schema: "volunteers",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -44,9 +49,6 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                     type = table.Column<string>(type: "text", nullable: false, defaultValue: "Undefined"),
                     birth_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_sterilized = table.Column<bool>(type: "boolean", nullable: false),
-                    vaccines = table.Column<string>(type: "text", nullable: false),
-                    payment_infos = table.Column<string>(type: "text", nullable: false),
-                    photos = table.Column<string>(type: "text", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false, defaultValue: "Undefined"),
                     city = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     country = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
@@ -66,22 +68,27 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                     weight = table.Column<int>(type: "integer", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    payment_infos = table.Column<string>(type: "jsonb", nullable: true),
+                    photos = table.Column<string>(type: "jsonb", nullable: true),
+                    vaccines = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pets", x => x.id);
+                    table.PrimaryKey("PK_pets", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pets_volunteers_volunteer_id",
+                        name: "FK_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
+                        principalSchema: "volunteers",
                         principalTable: "volunteers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_pets_volunteer_id",
+                name: "IX_pets_volunteer_id",
+                schema: "volunteers",
                 table: "pets",
                 column: "volunteer_id");
         }
@@ -90,10 +97,12 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "pets");
+                name: "pets",
+                schema: "volunteers");
 
             migrationBuilder.DropTable(
-                name: "volunteers");
+                name: "volunteers",
+                schema: "volunteers");
         }
     }
 }

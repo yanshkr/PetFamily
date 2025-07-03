@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework.Extensions;
 using PetFamily.Volunteers.Application.Queries.GetAllPetsWithPagination;
 using PetFamily.Volunteers.Application.Queries.GetPetById;
 using PetFamily.Volunteers.Presentation.Pets.Requests;
 
 namespace PetFamily.Volunteers.Presentation.Pets;
+[ApiController]
+[Authorize]
+[Route("[controller]")]
 internal class PetsController : ControllerBase
 {
-    [HttpGet("pet/{petId:guid}")]
+    [HttpGet("{petId:guid}")]
     public async Task<IActionResult> GetPet(
     [FromRoute] Guid petId,
     [FromServices] GetPetByIdHandler getPetByIdHandler,
@@ -18,7 +22,7 @@ internal class PetsController : ControllerBase
 
         return result.ToResponse();
     }
-    [HttpGet("pet")]
+    [HttpGet]
     public async Task<IActionResult> GetAllPets(
         [FromQuery] GetAllPetsRequest request,
         [FromServices] GetAllPetsWithPaginationHandler getAllPetsWithPaginationHandler,

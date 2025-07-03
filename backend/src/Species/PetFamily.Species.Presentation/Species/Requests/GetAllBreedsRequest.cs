@@ -6,10 +6,10 @@ public record GetAllBreedsRequest(
     int Page,
     int PageSize)
 {
-    public GetAllBreedsBySpecieIdQuery ToQuery(Guid SpecieId)
+    public GetAllBreedsBySpecieIdQuery ToQuery(Guid specieId)
     {
         return new GetAllBreedsBySpecieIdQuery(
-            SpecieId,
+            specieId,
             Name,
             Page,
             PageSize);

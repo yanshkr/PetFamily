@@ -8,6 +8,7 @@ public static class Errors
         public static Error ValueIsInvalid(string name, int min, int max) => Error.Validation("value.is.invalid", $"'{name}' should be between {min} and {max}");
 
         public static Error NotFound(Guid id) => Error.NotFound("record.not.found", $"Record not found for id '{id}'");
+        public static Error NotFound(string name) => Error.NotFound("record.not.found", $"Record not found for '{name}'");
         public static Error AlreadyExists(Guid id) => Error.Conflict("record.already.exists", $"Record already exists for id '{id}'");
         public static Error RelatedDataExists(Guid id) => Error.Conflict("related.data.exists", $"Related data exists for id '{id}'");
         public static Error UploadFailure(string message) => Error.UnExpected("upload.failure", message);

@@ -34,13 +34,11 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
         services.AddDbContext<SpeciesReadDbContextInterface, SpeciesReadDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
-            options.UseSnakeCaseNamingConvention();
         });
 
         services.AddDbContext<SpeciesWriteDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
-            options.UseSnakeCaseNamingConvention();
         });
     }
     private void ConfigureVolunteers(IServiceCollection services)
@@ -51,13 +49,11 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
         services.AddDbContext<VolunteersReadDbContextInterface, VolunteersReadDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
-            options.UseSnakeCaseNamingConvention();
         });
 
         services.AddDbContext<VolunteersWriteDbContext>(options =>
         {
             options.UseNpgsql(postgreSqlContainer.GetConnectionString());
-            options.UseSnakeCaseNamingConvention();
         });
     }
 

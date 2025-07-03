@@ -113,20 +113,44 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
             .IsRequired(true)
             .HasColumnName("main_photo");
 
-        builder.Property(p => p.Vaccines)
-            .JsonValueObjectCollectionConversion()
-            .IsRequired(true)
-            .HasColumnName("vaccines");
+        builder.OwnsMany(p => p.Vaccines, vb =>
+        {
+            vb.ToJson("vaccines");
 
-        builder.Property(p => p.PaymentInfos)
-            .JsonValueObjectCollectionConversion()
-            .IsRequired(true)
-            .HasColumnName("payment_infos");
+            vb.Property(v => v.Name)
+                .IsRequired(true)
+                .HasColumnName("name");
 
-        builder.Property(p => p.Photos)
-            .JsonValueObjectCollectionConversion()
-            .IsRequired(true)
-            .HasColumnName("photos");
+            vb.Property(v => v.Description)
+                .IsRequired(true)
+                .HasColumnName("description");
+
+            vb.Property(v => v.Date)
+                .IsRequired(true)
+                .HasColumnName("date");
+        });
+
+        builder.OwnsMany(p => p.PaymentInfos, pb =>
+        {
+            pb.ToJson("payment_infos");
+
+            pb.Property(v => v.Name)
+                .IsRequired(true)
+                .HasColumnName("name");
+
+            pb.Property(v => v.Address)
+                .IsRequired(true)
+                .HasColumnName("address");
+        });
+
+        builder.OwnsMany(p => p.Photos, pb =>
+        {
+            pb.ToJson("photos");
+
+            pb.Property(v => v.FileName)
+                .IsRequired(true)
+                .HasColumnName("filename");
+        });
 
         builder.Property(p => p.Status)
             .IsRequired(true)

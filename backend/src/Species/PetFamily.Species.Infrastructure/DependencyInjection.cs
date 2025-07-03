@@ -18,14 +18,13 @@ public static class DependencyInjection
         return services
             .InjectDatabase(configuration);
     }
-    public static IServiceCollection InjectDatabase(
+    private static IServiceCollection InjectDatabase(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<IReadDbContext, ReadDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("Database"));
-            options.UseSnakeCaseNamingConvention();
             options.EnableSensitiveDataLogging();
             options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         });
@@ -33,7 +32,6 @@ public static class DependencyInjection
         services.AddDbContext<WriteDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("Database"));
-            options.UseSnakeCaseNamingConvention();
             options.EnableSensitiveDataLogging();
             options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         });

@@ -11,6 +11,8 @@ public class WriteDbContext(DbContextOptions<WriteDbContext> options) : DbContex
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(WriteDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Write") ?? false);
+        
+        modelBuilder.HasDefaultSchema("volunteers");
 
         base.OnModelCreating(modelBuilder);
     }
