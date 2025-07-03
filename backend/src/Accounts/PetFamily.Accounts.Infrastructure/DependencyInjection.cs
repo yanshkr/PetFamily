@@ -60,8 +60,7 @@ public static class DependencyInjection
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options  =>
             {
-                var jwtOptions = configuration.GetSection(JwtOptions.NAME).Get<JwtOptions>()
-                                 ?? throw new ApplicationException("Missing jwt configuration");
+                var jwtOptions = configuration.GetRequiredSection(JwtOptions.NAME).Get<JwtOptions>()!;
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
